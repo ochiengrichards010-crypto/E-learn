@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Elimika Nasi</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap');
+:root{
+  --ink:#12153A;--ink2:#1D2160;--paper:#F4F3FB;--card:#fff;--line:#E3E1F2;--mute:#62648A;--text:#14173F;
+  --sun:#FFB02E;--stem:#0FB5A0;--soc:#F5A524;--arts:#E8478B;--act:#2B2F8F;--soft:#ECEAF8;
+  --mixp:66%;--mixc:#000;--fs:1;
+  --disp:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --body:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#0D0F2B;--card:#171A47;--line:#2A2E68;--mute:#A3A7D6;--text:#EEF0FF;--act:#FFB02E;--soft:#20245A;--mixp:58%;--mixc:#fff}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#0A0C26}
+body{display:flex;align-items:center;justify-content:center;font-family:var(--body)}
+#shell{position:relative;width:100%;height:100dvh;max-width:430px;background:var(--paper);color:var(--text);font-size:calc(15px*var(--fs));overflow:hidden}
+#scr{position:absolute;inset:0;display:flex;flex-direction:column}
+@media(min-width:720px){#shell{height:min(860px,94dvh);border-radius:40px;box-shadow:0 0 0 9px #1B1F55,0 0 0 11px #2D3390,0 40px 90px rgba(0,0,0,.55)}}
+.view{flex:1;overflow-y:auto;overscroll-behavior:contain;padding-bottom:24px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;text-align:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+h1,h2,h3{font-family:var(--disp);margin:0;line-height:1.12;letter-spacing:-.01em}
+p{margin:0}
+.row{display:flex;align-items:center}.sb{justify-content:space-between}.gap{gap:10px}.gap6{gap:6px}.col{display:flex;flex-direction:column}
+.mute{color:var(--mute)}.sm{font-size:.84em}.b{font-weight:700}
+.ic{flex:none}
+.band{height:14px;flex:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' fill='%2312153A'/%3E%3Cpath d='M14 3 25 14 14 25 3 14Z' fill='none' stroke='%23F5A524' stroke-width='2'/%3E%3Ccircle cx='14' cy='14' r='3' fill='%23E8478B'/%3E%3Ccircle cx='0' cy='0' r='2.5' fill='%230FB5A0'/%3E%3Ccircle cx='28' cy='0' r='2.5' fill='%230FB5A0'/%3E%3Ccircle cx='0' cy='28' r='2.5' fill='%230FB5A0'/%3E%3Ccircle cx='28' cy='28' r='2.5' fill='%230FB5A0'/%3E%3C/svg%3E") repeat-x center/14px 14px}
+.saver .band{background:var(--ink)}
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 18px;border-radius:14px;background:var(--sun);color:#12153A;font-weight:700;text-align:center}
+.btn.line{background:transparent;border:2px solid rgba(255,255,255,.35);color:#fff}
+.btn.ghost{background:var(--soft);color:var(--text)}
+.btn.sm2{width:auto;padding:8px 14px;font-size:.88em;border-radius:11px}
+.btn.dark{background:var(--ink);color:#fff}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.pill{padding:6px 11px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);color:#fff;font-size:.78em;font-weight:600}
+.pill.on{background:var(--sun);color:#12153A;border-color:var(--sun)}
+.ib{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;position:relative;background:rgba(255,255,255,.12);color:#fff;flex:none}
+.ib.lt{background:var(--soft);color:var(--text)}
+.ib .dot{position:absolute;top:8px;right:9px;width:9px;height:9px;border-radius:50%;background:var(--arts);border:2px solid var(--ink)}
+/* welcome */
+.wel{flex:1;display:flex;flex-direction:column;background:var(--ink);color:#fff;overflow-y:auto}
+.wtop{display:flex;justify-content:space-between;align-items:center;padding:18px 18px 0;gap:8px}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--disp);font-weight:800;font-size:1.15em}
+.hero{padding:0 14px}
+.hero svg{width:100%;height:auto;display:block}
+.trail{fill:none;stroke-width:7;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.7s cubic-bezier(.3,.7,.2,1) forwards}
+.t2{animation-delay:.3s}.t3{animation-delay:.6s}
+.node{opacity:0;animation:pop .4s ease-out forwards}.n1{animation-delay:1.5s}.n2{animation-delay:1.8s}.n3{animation-delay:2.1s}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{to{opacity:1}}
+.saver .trail,.saver .node{animation:none;stroke-dashoffset:0;opacity:1}
+@media(prefers-reduced-motion:reduce){.trail,.node{animation:none;stroke-dashoffset:0;opacity:1}}
+.wcopy{padding:4px 22px 0}
+.wcopy h1{font-size:2.7em;font-weight:800}
+.wcopy p{margin-top:10px;color:#C9CCF0;line-height:1.5;max-width:34ch}
+.wbtns{padding:20px 22px 10px;display:flex;flex-direction:column;gap:10px}
+.demo{padding:6px 22px 20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#B8BCEB;font-size:.85em}
+.demo button{padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;font-weight:600}
+/* header */
+.hdr{background:var(--ink);color:#fff;padding:18px 18px 16px;flex:none}
+.hdr h1{font-size:1.55em;font-weight:800}
+.hdr .sub{color:#BFC3EE;font-size:.86em;margin-top:3px}
+.streak{margin-top:14px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:.9em;color:var(--sun)}
+.days{margin-left:auto;display:flex;gap:4px}
+.days b{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.68em;background:rgba(255,255,255,.12);color:#BFC3EE}
+.days b.on{background:var(--sun);color:#12153A}
+.sec{padding:20px 18px 0}
+.sec>h2{font-size:1.12em;margin-bottom:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}
+.list{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.li{display:flex;align-items:center;gap:12px;padding:13px 14px;width:100%;border-bottom:1px solid var(--line)}
+.li:last-child{border-bottom:0}
+.li .grow{flex:1;min-width:0}
+.dotc{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-weight:700;font-size:.76em;background:color-mix(in srgb,var(--c) 18%,transparent);color:color-mix(in srgb,var(--c) var(--mixp),var(--mixc));white-space:nowrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.subj{display:flex;flex-direction:column;gap:12px;padding:14px;border-radius:22px 22px 22px 8px;background:var(--c);color:#fff;min-height:128px;justify-content:space-between}
+.subj .nm{font-family:var(--disp);font-weight:700;font-size:1.05em;line-height:1.1}
+.subj .chip{background:rgba(255,255,255,.2);color:#fff}
+.journey{background:var(--ink);color:#fff;border-radius:20px;padding:14px 14px 10px}
+.journey svg{width:100%;height:auto}
+.advice{display:flex;gap:12px;align-items:center;background:linear-gradient(100deg,var(--ink2),var(--ink));color:#fff;border-radius:20px;padding:16px;width:100%}
+.bar{height:9px;border-radius:99px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--c)}
+.tabbar{flex:none;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(8px + env(safe-area-inset-bottom))}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;font-size:.7em;font-weight:600;color:var(--mute);border-radius:12px}
+.tab.on{color:var(--act)}
+.tab.on svg{stroke-width:2.4}
+.tab .pip{width:5px;height:5px;border-radius:50%;background:transparent}
+.tab.on .pip{background:var(--sun)}
+.banner{margin:12px 18px 0;padding:10px 12px;border-radius:12px;background:#FFF1D6;color:#5A3A00;font-size:.86em;font-weight:600;display:flex;gap:8px;align-items:center}
+.banner.off{background:#2A2E68;color:#fff}
+/* lesson */
+.sh{display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--c,var(--ink));color:#fff;flex:none}
+.sh .t{flex:1;font-weight:700;font-size:.9em}
+.art{padding:20px 20px 10px}
+.art h1{font-size:1.65em;font-weight:800;margin-bottom:6px}
+.art p{line-height:1.65;margin-top:12px;max-width:62ch}
+.outc{margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--soft);border-left:5px solid var(--c)}
+.outc ul{margin:6px 0 0;padding-left:18px;line-height:1.5}
+.ex{margin-top:16px;border:2px dashed var(--line);border-radius:16px;padding:14px}
+.ex .step{padding:8px 0;border-top:1px solid var(--line);line-height:1.5}
+.ex .step:first-of-type{border-top:0}
+.opt{display:flex;gap:12px;align-items:center;width:100%;padding:14px;border-radius:14px;border:2px solid var(--line);background:var(--card);margin-top:10px;font-weight:600}
+.opt:hover{border-color:var(--act)}
+.opt.ok{border-color:#2E9E55;background:rgba(46,158,85,.14)}
+.opt.no{border-color:#E0483F;background:rgba(224,72,63,.13)}
+.opt.dim{opacity:.6}
+.opt .k{width:26px;height:26px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-size:.8em;flex:none}
+.why{margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--soft);line-height:1.5}
+.big{font-family:var(--disp);font-size:3.4em;font-weight:800;line-height:1}
+/* forms */
+.fld{margin-top:14px}
+.fld label{display:block;font-weight:600;font-size:.88em;margin-bottom:6px}
+.fld input,.fld select,.fld textarea,.inp{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.fld .er{color:#E0483F;font-size:.82em;margin-top:5px;font-weight:600}
+.chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;line-height:1.4}
+.chk input{width:20px;height:20px;margin-top:1px;accent-color:var(--act);flex:none}
+.form{flex:1;overflow-y:auto;padding:6px 20px 20px}
+.steps{display:flex;gap:5px;padding:0 20px}
+.steps i{flex:1;height:5px;border-radius:9px;background:var(--line)}
+.steps i.on{background:var(--sun)}
+.fhead{padding:16px 20px 12px;display:flex;align-items:center;gap:12px}
+.fhead h1{font-size:1.4em}
+.otp{letter-spacing:.5em;text-align:center;font-size:1.6em!important;font-weight:700}
+.role{display:flex;gap:14px;align-items:center;padding:16px;border-radius:18px;border:2px solid var(--line);background:var(--card);width:100%;margin-top:12px}
+.role:hover{border-color:var(--act)}
+.role .rb{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;background:var(--c)}
+.seg{display:flex;background:var(--soft);border-radius:12px;padding:3px}
+.seg button{flex:1;padding:8px;border-radius:9px;text-align:center;font-weight:600;font-size:.88em}
+.seg button.on{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.sw{width:46px;height:28px;border-radius:99px;background:var(--line);position:relative;flex:none;transition:background .15s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .15s}
+.sw.on{background:var(--act)}.sw.on::after{transform:translateX(18px)}
+table{border-collapse:collapse;width:100%;font-size:.86em}
+th,td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+td input{width:50px;padding:6px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--text);text-align:center;font:inherit}
+.heat td.h{color:#fff;font-weight:700}
+.bubble{max-width:82%;padding:10px 12px;border-radius:16px;line-height:1.45;margin-top:8px}
+.bubble.me{margin-left:auto;background:var(--ink2);color:#fff;border-bottom-right-radius:5px}
+.bubble.th{background:var(--soft);border-bottom-left-radius:5px}
+.modal{position:absolute;inset:0;background:rgba(8,10,35,.66);display:flex;align-items:flex-end;z-index:20}
+.sheet{width:100%;max-height:92%;overflow:auto;background:var(--paper);color:var(--text);border-radius:26px 26px 0 0;padding:18px 20px calc(22px + env(safe-area-inset-bottom))}
+.sheet h2{font-size:1.3em;margin-bottom:6px}
+.grab{width:44px;height:5px;border-radius:9px;background:var(--line);margin:-4px auto 14px}
+.spin{width:44px;height:44px;border-radius:50%;border:5px solid var(--line);border-top-color:var(--sun);animation:sp 1s linear infinite;margin:20px auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spin{animation-duration:3s}}
+.mp{background:#0B6B2E;color:#fff;border-radius:14px;padding:12px 14px;font-weight:700;display:flex;gap:10px;align-items:center}
+.plan{border:2px solid var(--line);border-radius:18px;padding:14px;background:var(--card);width:100%;margin-top:10px;display:block}
+.plan.sel{border-color:var(--act);box-shadow:0 0 0 3px color-mix(in srgb,var(--act) 25%,transparent)}
+.plan .pr{font-family:var(--disp);font-weight:800;font-size:1.5em}
+#toast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);z-index:50;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:90%}
+.toast{background:#12153A;color:#fff;padding:10px 16px;border-radius:12px;font-weight:600;font-size:.88em;border:1px solid #3B4090;text-align:center}
+</style>
+</head>
+<body>
+<div id="shell"><div id="scr"></div><div id="toast"></div></div>
+<script>
+/* ============ DATA (all editable data in the live app; see spec section 13) ============ */
+const SUBJECTS=[
+{id:'bio',name:'Biology',sw:'Biolojia',c:'#0B8F80',ic:'leaf',teacher:'Ms. Wanjiku',lessons:[
+ {id:'bio1',strand:'Cell Biology',title:'Cell structure and organelles',mins:7,
+  outcomes:['Name the main organelles in plant and animal cells','Explain what each organelle does'],
+  body:['Every living thing is made of cells. Think of a cell as a small shop in Gikomba market: each worker has one job, and the shop only runs well when everyone does their part.','The <b>nucleus</b> holds the instructions (DNA) and controls the cell. <b>Mitochondria</b> release energy from glucose through respiration. <b>Ribosomes</b> build proteins. The <b>cell membrane</b> decides what enters and leaves.','Plant cells also have a <b>cell wall</b> made of cellulose for support, a large <b>vacuole</b> that stores water, and <b>chloroplasts</b> where photosynthesis happens. Animal cells do not have these.','Try this: peel a thin skin from an onion, add a drop of iodine and look under a microscope. The cell walls show up clearly.'],
+  quiz:[{q:'Which organelle releases energy from glucose?',o:['Nucleus','Mitochondria','Ribosome','Vacuole'],a:1,why:'Mitochondria carry out aerobic respiration and release energy the cell can use.'},
+        {q:'Which structure is found in plant cells but not in animal cells?',o:['Cell membrane','Nucleus','Cell wall','Ribosome'],a:2,why:'Only plant cells have a cellulose cell wall.'},
+        {q:'What do ribosomes make?',o:['Proteins','Starch','DNA','Cellulose'],a:0,why:'Ribosomes join amino acids together to build proteins.'}]},
+ {id:'bio2',strand:'Movement of Substances',title:'Diffusion and osmosis',mins:6,
+  outcomes:['Describe diffusion and osmosis','Predict what happens to cells in different solutions'],
+  body:['<b>Diffusion</b> is the movement of particles from where there are many of them to where there are fewer. When mandazi are frying, the smell reaches you across the room by diffusion.','<b>Osmosis</b> is the movement of water through a partially permeable membrane, from a dilute solution to a more concentrated one.','Sprinkle salt on sliced tomatoes for kachumbari and watch the juice collect. The salty outside is more concentrated, so water leaves the tomato cells by osmosis.','A plant cell in very salty water loses water and shrinks. In pure water it swells, but the strong cell wall stops it from bursting.'],
+  quiz:[{q:'Diffusion is the movement of particles from:',o:['Low to high concentration','High to low concentration','Cold to hot places','Inside a cell only'],a:1,why:'Particles spread out from crowded areas to less crowded areas.'},
+        {q:'Osmosis is the movement of what?',o:['Water through a partially permeable membrane','Salt through a cell wall','Oxygen into blood only','Sugar into starch'],a:0,why:'Osmosis is specifically about water moving across a membrane.'},
+        {q:'A plant cell placed in very salty water will:',o:['Swell and burst','Lose water and shrink','Stay the same','Make more starch'],a:1,why:'The solution outside is more concentrated, so water leaves the cell.'}]}]},
+{id:'chem',name:'Chemistry',sw:'Kemia',c:'#6247E5',ic:'flask',teacher:'Mr. Kiprop',lessons:[
+ {id:'chem1',strand:'Structure of the Atom',title:'Atomic structure',mins:7,
+  outcomes:['Describe protons, neutrons and electrons','Work out particles from atomic and mass numbers'],
+  body:['Atoms are made of three particles. <b>Protons</b> (positive) and <b>neutrons</b> (no charge) sit in the nucleus. <b>Electrons</b> (negative) move around it in shells.','The <b>atomic number</b> is the number of protons. The <b>mass number</b> is protons plus neutrons. A neutral atom has equal numbers of protons and electrons.'],
+  ex:['Sodium has atomic number 11 and mass number 23.','Protons = atomic number = 11.','Electrons in a neutral atom = 11.','Neutrons = 23 − 11 = 12.','Electron arrangement: 2.8.1'],
+  quiz:[{q:'The atomic number tells you the number of:',o:['Neutrons','Protons','Shells','Molecules'],a:1,why:'Atomic number is defined as the number of protons.'},
+        {q:'An atom has mass number 27 and atomic number 13. How many neutrons?',o:['13','14','27','40'],a:1,why:'27 − 13 = 14 neutrons.'},
+        {q:'Which particle has a negative charge?',o:['Proton','Neutron','Electron','Nucleus'],a:2,why:'Electrons carry negative charge.'}]},
+ {id:'chem2',strand:'Acids, Bases and Salts',title:'Acids, bases and the pH scale',mins:6,
+  outcomes:['Use the pH scale to classify solutions','Use indicators to test substances'],
+  body:['The pH scale runs from 0 to 14. Below 7 is acidic, 7 is neutral and above 7 is basic (alkaline).','Lemon juice is acidic. Water from ash of a jiko is basic. Litmus paper turns <b>red in acid</b> and <b>blue in alkali</b>.','Antacid tablets treat heartburn because they are bases that neutralise extra stomach acid.'],
+  quiz:[{q:'A solution has pH 3. It is:',o:['Acidic','Neutral','Basic','Salty'],a:0,why:'Anything below pH 7 is acidic.'},
+        {q:'Red litmus paper turns ___ in an alkali.',o:['Yellow','Red','Blue','Green'],a:2,why:'Alkalis turn red litmus blue.'},
+        {q:'Why do antacids relieve heartburn?',o:['They add acid','They neutralise stomach acid','They cool the stomach','They make salt water'],a:1,why:'A base reacts with an acid and neutralises it.'}]}]},
+{id:'cs',name:'Computer Studies',sw:'Kompyuta',c:'#2569D6',ic:'code',teacher:'Mr. Njoroge',lessons:[
+ {id:'cs1',strand:'Foundations of Computing',title:'How a computer system works',mins:6,
+  outcomes:['Describe input, processing, output and storage','Give examples of each'],
+  body:['Every computer follows four steps: <b>input</b>, <b>processing</b>, <b>output</b> and <b>storage</b>.','When you send money with M-Pesa, the keypad or touchscreen is the input. The processor (CPU) follows instructions. The screen shows the result as output. Your phone memory and SIM store the data.'],
+  quiz:[{q:'Which of these is an output device?',o:['Keyboard','Monitor','Mouse','Scanner'],a:1,why:'A monitor displays results to the user.'},
+        {q:'The main job of the CPU is to:',o:['Store photos','Process instructions','Print pages','Cool the computer'],a:1,why:'The CPU carries out instructions and calculations.'},
+        {q:'Which is best for storing a photo permanently?',o:['RAM','Secondary storage','The monitor','The keyboard'],a:1,why:'RAM is temporary. Secondary storage keeps data when power is off.'}]},
+ {id:'cs2',strand:'Data Representation',title:'Binary numbers',mins:6,
+  outcomes:['Explain why computers use binary','Convert between binary and decimal'],
+  body:['Computers use only two digits, 0 and 1, because electronic circuits have two states: off and on.','In binary the place values are 8, 4, 2, 1 (and so on, doubling each time to the left). Add the place values that have a 1.'],
+  ex:['Convert 1011 to decimal.','Write the place values: 8 4 2 1.','Match the digits: 1 0 1 1.','Add the values with a 1: 8 + 2 + 1 = 11.'],
+  quiz:[{q:'What is binary 101 in decimal?',o:['3','5','6','7'],a:1,why:'4 + 1 = 5.'},
+        {q:'How many different digits does binary use?',o:['1','2','8','10'],a:1,why:'Binary uses only 0 and 1.'},
+        {q:'Decimal 6 in binary is:',o:['101','110','011','111'],a:1,why:'6 = 4 + 2, so 110.'}]}]},
+{id:'math',name:'Core Mathematics',sw:'Hisabati',c:'#D9482B',ic:'sigma',teacher:'Mrs. Achieng',lessons:[
+ {id:'math1',strand:'Algebra',title:'Quadratic expressions',mins:8,
+  outcomes:['Expand and factorise quadratic expressions','Solve simple quadratic equations'],
+  body:['A quadratic expression has an x² term, for example x² + 5x + 6. To <b>expand</b> brackets, multiply every term in one bracket by every term in the other.','To <b>factorise</b> x² + bx + c, find two numbers that multiply to c and add to b.'],
+  ex:['Factorise x² + 5x + 6.','We need two numbers that multiply to 6 and add to 5.','2 × 3 = 6 and 2 + 3 = 5, so the numbers are 2 and 3.','Answer: (x + 2)(x + 3).','Check by expanding: x² + 3x + 2x + 6 = x² + 5x + 6.'],
+  quiz:[{q:'Expand (x + 3)(x + 4).',o:['x² + 12','x² + 7x + 12','x² + 7x + 7','2x + 7'],a:1,why:'x² + 4x + 3x + 12 = x² + 7x + 12.'},
+        {q:'Factorise x² + 5x + 6.',o:['(x + 1)(x + 6)','(x + 2)(x + 3)','(x − 2)(x − 3)','(x + 5)(x + 1)'],a:1,why:'2 × 3 = 6 and 2 + 3 = 5.'},
+        {q:'Solve x² − 9 = 0.',o:['x = 3 only','x = 9','x = 3 or x = −3','x = 0'],a:2,why:'x² = 9, so x can be 3 or −3.'}]},
+ {id:'math2',strand:'Coordinate Geometry',title:'Gradient of a straight line',mins:7,
+  outcomes:['Calculate the gradient from two points','Interpret gradient in real situations'],
+  body:['The <b>gradient</b> measures how steep a line is: rise divided by run, or (y₂ − y₁) ÷ (x₂ − x₁).','A boda boda charges KES 50 plus KES 20 for every km. The cost is y = 20x + 50. The gradient, 20, is the cost of each extra kilometre.'],
+  ex:['Find the gradient through (1, 2) and (3, 8).','Rise = 8 − 2 = 6.','Run = 3 − 1 = 2.','Gradient = 6 ÷ 2 = 3.'],
+  quiz:[{q:'Find the gradient of the line through (0, 1) and (2, 5).',o:['1','2','3','4'],a:1,why:'(5 − 1) ÷ (2 − 0) = 2.'},
+        {q:'In y = 20x + 50, the gradient is:',o:['50','20','70','0'],a:1,why:'The number multiplying x is the gradient.'},
+        {q:'A horizontal line has gradient:',o:['1','Undefined','0','−1'],a:2,why:'There is no rise, so the gradient is 0.'}]}]}
+];
+const PATHS=[
+ {id:'stem',n:'STEM',c:'#0FB5A0',tracks:{'Pure Sciences':['Biology, Chemistry, Computer Studies','Physics, Chemistry, Core Mathematics'],'Applied Sciences':['Agriculture, Biology, Home Science'],'Technical Studies':['Building and Construction, Electricity, Core Mathematics']},
+  ex:'Core Mathematics, Biology, Chemistry, Physics, Computer Studies, Agriculture, Home Science, and technical subjects',car:['Doctor','Software engineer','Civil engineer','Agricultural officer']},
+ {id:'soc',n:'Social Sciences',c:'#F5A524',tracks:{'Languages and Literature':['English Literature, Kiswahili, History and Citizenship'],'Humanities and Business Studies':['History and Citizenship, Geography, Business Studies']},
+  ex:'Essential Mathematics, Languages, Literature, History and Citizenship, Geography, Religious Studies, Business Studies',car:['Lawyer','Journalist','Teacher','Accountant']},
+ {id:'arts',n:'Arts and Sports Science',c:'#E8478B',tracks:{'Arts':['Fine Arts, Music and Dance, Theatre'],'Sports':['Sports and Recreation, Business Studies']},
+  ex:'Essential Mathematics, Music and Dance, Theatre, Fine Arts, Sports and Recreation',car:['Music producer','Sports coach','Actor','Fashion designer']}
+];
+const ADV=[
+ ['What would you enjoy most on a free Saturday?','Fix a phone or build a small gadget','Debate a topic or write a story','Practise a song, dance or football skill'],
+ ['In class, which lesson makes time fly?','Mathematics or science','Languages, history or business','Music, art or PE'],
+ ['Your village has a water shortage. What do you do?','Design a simple water filter','Organise a baraza and write to the county','Make a song or play that gets people talking'],
+ ['You like to work with…','Data and experiments','People and ideas','Performance and creativity'],
+ ['Pick a dream workplace','Lab, hospital or workshop','Court, newsroom or school','Studio, stage or sports field'],
+ ['Which sounds most like you?','I like solving puzzles','I like persuading and explaining','I like expressing myself and moving']
+];
+const SCHOOLS=['Lakeview Senior School','Maseno School','Alliance Girls High School','Moi Girls Nairobi','My school is not listed'];
+const T={en:{tag:'Elimika nasi.',tagsub:'Learn with us. Notes, quizzes and progress for Grades 10, 11 and 12, built for the CBE and for cheap phones.',create:'Create account',login:'Log in',hello:'Hello',streak:'day streak',subjects:'My subjects',todo:'To do today',recommended:'Recommended practice',start:'Start',next:'Next',check:'Check your understanding',ask:'Ask my teacher',
+ home:'Home',learn:'Learn',tasks:'Tasks',progress:'Progress',profile:'Profile',dash:'Dashboard',classes:'Classes',assess:'Assess',mark:'Marking',more:'More',results:'Results',msgs:'Messages',pay:'Pay'},
+ sw:{tag:'Elimika nasi.',tagsub:'Masomo, majaribio na maendeleo kwa Gredi ya 10, 11 na 12, kulingana na CBE na yanayofaa simu za kawaida.',create:'Fungua akaunti',login:'Ingia',hello:'Habari',streak:'siku mfululizo',subjects:'Masomo yangu',todo:'Za kufanya leo',recommended:'Mazoezi yanayopendekezwa',start:'Anza',next:'Endelea',check:'Jipime uelewa wako',ask:'Muulize mwalimu',
+ home:'Nyumbani',learn:'Jifunze',tasks:'Kazi',progress:'Maendeleo',profile:'Wasifu',dash:'Dashibodi',classes:'Madarasa',assess:'Tathmini',mark:'Kusahihisha',more:'Zaidi',results:'Matokeo',msgs:'Ujumbe',pay:'Lipa'}};
+const SCALE=[[90,'EE1'],[75,'EE2'],[58,'ME1'],[41,'ME2'],[31,'AE1'],[21,'AE2'],[11,'BE1'],[0,'BE2']];
+const LC={EE:'#0FA08F',ME:'#3A9A47',AE:'#D08A00',BE:'#E0483F'};
+const LW={EE:'Exceeding expectation',ME:'Meeting expectation',AE:'Approaching expectation',BE:'Below expectation'};
+const FB={bio:'Strong on organelles. Revise osmosis before the next quiz.',chem:'Good atomic structure work. Keep practising pH questions.',cs:'Clear on hardware. Practise binary conversions daily.',math:'Needs steady practice on gradients and graphs.'};
+const TABS={student:[['home','home'],['learn','book'],['tasks','tasks'],['progress','chart'],['profile','user']],
+ teacher:[['dash','home'],['classes','grid'],['assess','pen'],['mark','check'],['more','more']],
+ parent:[['home','home'],['results','chart'],['msgs','msg'],['pay','wallet'],['profile','user']]};
+
+/* ============ STATE (memory only; the live app stores data in PostgreSQL with RLS) ============ */
+const S={scr:'welcome',role:null,tab:'home',lang:'en',saver:false,offline:false,size:1,user:{first:'Amina',name:'Amina Otieno'},
+ subj:null,lesson:null,quiz:null,adv:null,ex:{},modal:null,
+ sc:{bio1:78,bio2:46,chem1:81,chem2:62,cs1:90,cs2:55,math1:68,math2:39},
+ done:{bio1:1,chem1:1,cs1:1,math1:1},hist:[{lid:'bio1',pct:100}],dl:{bio1:1,math1:1},book:{},
+ tasks:[{id:1,t:'Cell structure quiz',lid:'bio1',due:'Today, 5:00 pm',st:'new',sba:1},{id:2,t:'Atomic structure check',lid:'chem1',due:'Tomorrow',st:'new'},{id:3,t:'Binary conversion task',lid:'cs2',due:'Friday',st:'prog'},{id:4,t:'Quadratic practice',lid:'math1',due:'Last week',st:'marked',score:82},{id:5,t:'Acids and pH',lid:'chem2',due:'Last week',st:'sub'}],
+ invite:null,su:null,login:{mode:'pw',fails:0,err:''},
+ child:0,plan:'free',alerts:{1:0,2:0,3:0},msgs:[{me:0,x:'Hello. Amina did well on cells this week. Please encourage her to revise osmosis.',tm:'Yesterday'}],pay:null,
+ tPending:false,cls:[{n:'Grade 10 East, Biology',k:38,code:'K7MX2Q',exp:'12 Nov'},{n:'Grade 11 West, Chemistry',k:34,code:'P4TR9B',exp:'12 Nov'},{n:'Grade 10 North, Biology',k:40,code:'W2LN8D',exp:'12 Nov'}],
+ reg:null,joinReq:[{n:'Kevin Mwangi',c:'Grade 10 East'},{n:'Lucy Chebet',c:'Grade 10 East'},{n:'Peter Oloo',c:'Grade 11 West'}],linkReq:[{p:'Grace Otieno (mother)',s:'Amina Otieno'},{p:'Samuel Kamau (father)',s:'Brian Kamau'}],
+ queue:[{who:'Cynthia Atieno',q:'Explain why a plant cell does not burst in pure water.',a:'The cell wall is strong so it stops the cell from bursting even when water enters by osmosis.',max:4},{who:'Dennis Mutua',q:'Describe one use of diffusion in the human body.',a:'Oxygen moves from the air in the alveoli into the blood because there is more oxygen in the lungs.',max:4},{who:'Esther Njeri',q:'Name two differences between plant and animal cells.',a:'Plant cells have a cell wall and chloroplasts.',max:4}],
+ mark:{lvl:null,fb:''},published:[],draft:{title:'',cls:0,type:'Quiz',w:5,lim:20,mk:'Automatic',sel:{}},
+ sba:{rows:[['Amina Otieno',16,24,38],['Brian Kamau',12,18,30],['Cynthia Atieno',18,27,44],['Dennis Mutua',9,15,25],['Esther Njeri',14,21,35],['Faith Wafula',11,17,31]],locked:false}};
+const t=k=>(T[S.lang]&&T[S.lang][k])||T.en[k]||k;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const avg=a=>a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):0;
+const SB=id=>SUBJECTS.find(s=>s.id===id);
+const LES=id=>{for(const s of SUBJECTS){const l=s.lessons.find(l=>l.id===id);if(l)return Object.assign({subj:s},l)}};
+const subjAvg=s=>avg(s.lessons.map(l=>S.sc[l.id]).filter(v=>v!=null));
+const subjPct=s=>Math.round(s.lessons.filter(l=>S.done[l.id]).length/s.lessons.length*100);
+const overall=()=>avg(SUBJECTS.map(subjAvg));
+function lvl(p){const r=SCALE.find(x=>p>=x[0]);const code=r[1];return{code,c:LC[code.slice(0,2)],w:LW[code.slice(0,2)],pts:8-SCALE.indexOf(r)}}
+const LChip=p=>`<span class="chip" style="--c:${lvl(p).c}">${lvl(p).code}</span>`;
+const IC={home:'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',book:'<path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7z"/>',tasks:'<rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 9l2 2 4-4M8 16h8"/>',chart:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',msg:'<path d="M4 5h16v11H9l-5 4z"/>',wallet:'<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/>',grid:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',pen:'<path d="M4 20l1-4L16 5l3 3L8 19zM14 7l3 3"/>',check:'<path d="M5 12l5 5 9-10"/>',more:'<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',chev:'<path d="M9 5l7 7-7 7"/>',back:'<path d="M15 5l-7 7 7 7"/>',bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/>',flame:'<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-9z"/>',dl:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',send:'<path d="M4 12L20 4l-5 16-3-7z"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',bookmark:'<path d="M6 3h12v18l-6-4-6 4z"/>',close:'<path d="M6 6l12 12M18 6L6 18"/>',leaf:'<path d="M5 19C5 9 11 4 20 4c0 9-5 15-15 15zM5 19l8-8"/>',flask:'<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/>',code:'<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',sigma:'<path d="M18 5H6l7 7-7 7h12"/>',compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',off:'<path d="M3 3l18 18M8.5 8.5a9 9 0 0 1 11 1.5M5 12a9 9 0 0 1 3-2M12 18h.01"/>',book2:'<path d="M5 4h14v16H5zM9 4v16"/>',user2:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'};
+const icon=(n,s=22)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
+function ring(p,c,sz=54,w=6,tc='currentColor',bg='rgba(255,255,255,.28)'){const r=(sz-w)/2,C=2*Math.PI*r;return `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" role="img" aria-label="${p} percent"><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="${bg}" stroke-width="${w}"/><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="${C*p/100} ${C}" transform="rotate(-90 ${sz/2} ${sz/2})"/><text x="50%" y="52%" text-anchor="middle" dominant-baseline="central" font-size="${sz*.27}" font-weight="700" fill="${tc}" font-family="inherit">${p}%</text></svg>`}
+function sun(sz=30){let r='';for(let i=0;i<10;i++){const a=i*36*Math.PI/180;r+=`<line x1="${16+Math.cos(a)*11}" y1="${16+Math.sin(a)*11}" x2="${16+Math.cos(a)*15}" y2="${16+Math.sin(a)*15}" stroke="#FFB02E" stroke-width="2.2" stroke-linecap="round"/>`}return `<svg width="${sz}" height="${sz}" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="7" fill="#FFB02E"/>${r}</svg>`}
+function toast(m){const e=document.createElement('div');e.className='toast';e.textContent=m;$('#toast').appendChild(e);setTimeout(()=>e.remove(),2600)}
+
+/* ============ RENDER ============ */
+function render(reset){
+  const old=$('#view');const st=old&&!reset?old.scrollTop:0;
+  const sh=$('#shell');sh.className=S.saver?'saver':'';sh.style.setProperty('--fs',S.size);
+  const v={welcome:Welcome,login:Login,signup:Signup,consent:Consent,app:AppView}[S.scr]();
+  $('#scr').innerHTML=v+(S.modal?Modal():'');
+  const nv=$('#view');if(nv)nv.scrollTop=st;
+}
+function go(s){S.scr=s;S.modal=null;render(true)}
+function tabTo(k){S.tab=k;S.subj=S.lesson=S.quiz=S.adv=null;S.reg=null;render(true)}
+
+/* ---------- Welcome ---------- */
+function Hero(){let rays='';for(let i=0;i<14;i++){const a=i*(360/14)*Math.PI/180;rays+=`<line x1="${180+Math.cos(a)*38}" y1="${64+Math.sin(a)*38}" x2="${180+Math.cos(a)*50}" y2="${64+Math.sin(a)*50}" stroke="#FFB02E" stroke-width="3" stroke-linecap="round"/>`}
+return `<div class="hero"><svg viewBox="0 0 360 300" role="img" aria-label="Three learning pathways leading away from a rising sun">
+${rays}<circle cx="180" cy="64" r="28" fill="#FFB02E"/>
+<path class="trail" pathLength="1" d="M180 100 C150 160 90 170 64 252" stroke="#0FB5A0"/>
+<path class="trail t2" pathLength="1" d="M180 100 C186 170 172 210 180 252" stroke="#F5A524"/>
+<path class="trail t3" pathLength="1" d="M180 100 C210 160 270 170 296 252" stroke="#E8478B"/>
+<g class="node n1"><circle cx="64" cy="252" r="10" fill="#0FB5A0" stroke="#fff" stroke-width="3"/><text x="64" y="285" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="inherit">STEM</text></g>
+<g class="node n2"><circle cx="180" cy="252" r="10" fill="#F5A524" stroke="#fff" stroke-width="3"/><text x="180" y="285" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="inherit">Social Sciences</text></g>
+<g class="node n3"><circle cx="296" cy="252" r="10" fill="#E8478B" stroke="#fff" stroke-width="3"/><text x="296" y="285" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="inherit">Arts and Sports</text></g></svg></div>`}
+function Welcome(){return `<div class="wel"><div class="wtop"><div class="logo">${sun(30)}<span>Elimika Nasi</span></div><div class="row gap6"><button class="pill" data-a="lang">${S.lang==='en'?'Kiswahili':'English'}</button><button class="pill ${S.saver?'on':''}" data-a="saver">Data saver ${S.saver?'on':'off'}</button></div></div>
+${Hero()}<div class="wcopy"><h1>${t('tag')}</h1><p>${t('tagsub')}</p></div>
+<div class="wbtns"><button class="btn" data-a="go" data-s="signup">${t('create')}</button><button class="btn line" data-a="go" data-s="login">${t('login')}</button></div>
+<div class="demo"><span>Try a demo as</span><button data-a="demo" data-r="student">Student</button><button data-a="demo" data-r="teacher">Teacher</button><button data-a="demo" data-r="parent">Parent</button></div><div class="band"></div></div>`}
+
+/* ---------- Login ---------- */
+function Login(){const L=S.login;const otp=L.mode==='otp';
+return `<div class="fhead"><button class="ib lt" data-a="go" data-s="welcome" aria-label="Back">${icon('back')}</button><h1>${t('login')}</h1></div>
+<div class="form"><div class="fld"><label for="lid">${otp?'Phone number':'Phone, email or username'}</label><input id="lid" autocomplete="username" placeholder="${otp?'07XX XXX XXX':'e.g. 0712 345 678'}"></div>
+${otp?'':`<div class="fld"><label for="lpw">Password</label><div class="row gap6"><input id="lpw" type="password" autocomplete="current-password"><button class="ib lt" data-a="showpw" aria-label="Show or hide password">${icon('lock',18)}</button></div></div>`}
+${L.err?`<p class="er" style="color:#E0483F;font-weight:600;margin-top:12px">${L.err}</p>`:''}
+<div class="col gap" style="margin-top:20px"><button class="btn" data-a="doLogin">${otp?'Send me a code':t('login')}</button>
+<button class="btn ghost" data-a="loginMode">${otp?'Use password instead':'Log in with SMS code instead'}</button>
+<button class="btn ghost" data-a="forgot">Forgot password?</button></div>
+<p class="sm mute" style="margin-top:18px;line-height:1.5">Demo: type <b>student</b>, <b>teacher</b> or <b>parent</b> with any password. After 5 wrong tries the account locks for 15 minutes.</p>
+<button class="btn ghost" style="margin-top:14px" data-a="go" data-s="signup">${t('create')}</button></div>`}
+
+/* ---------- Sign-up wizard ---------- */
+const PHONE=/^(?:\+254|0)[17]\d{8}$/;
+const normPhone=p=>{p=p.replace(/[\s-]/g,'');return p.startsWith('0')?'+254'+p.slice(1):p};
+const nm={k:'first',l:'First name',r:1,m:/^[A-Za-z' -]{2,40}$/,e:'Use 2 to 40 letters.'};
+const FIELDS={
+ student:[
+  {t:'About you',f:[nm,{k:'last',l:'Last name',r:1,m:/^[A-Za-z' -]{2,40}$/,e:'Use 2 to 40 letters.'},{k:'grade',l:'Grade',s:['10','11','12'],r:1},{k:'county',l:'County',r:1}]},
+  {t:'School and pathway',f:[{k:'school',l:'School',s:SCHOOLS,r:1},{k:'path',l:'Pathway',s:PATHS.map(p=>p.n),r:1},{k:'track',l:'Track',dep:'path',r:1},{k:'combo',l:'Subject combination',dep:'track',r:1}]},
+  {t:'Phone and password',f:[{k:'phone',l:'Your phone number',r:1,ph:1},{k:'pw',l:'Password (8+ characters, letters and a number)',type:'password',r:1,pw:1},{k:'pw2',l:'Confirm password',type:'password',r:1},{k:'u18',l:'I am under 18',c:1},{k:'pphone',l:'Parent or guardian phone',ph:1,showIf:d=>d.u18!==false,r:1},{k:'terms',l:'I accept the Terms of Use and Privacy Policy',c:1,r:1}]},
+  {t:'Confirm your phone',otp:1}],
+ teacher:[
+  {t:'Your details',f:[{k:'full',l:'Full name',r:1,m:/^[A-Za-z.' -]{3,60}$/,e:'Enter your full name.'},{k:'phone',l:'Phone number',r:1,ph:1},{k:'email',l:'Email (recommended)',type:'email'},{k:'school',l:'School',s:SCHOOLS,r:1},{k:'subs',l:'Subjects taught',r:1},{k:'grades',l:'Grades taught',s:['10','11','12','10 and 11','11 and 12','10, 11 and 12'],r:1},{k:'tsc',l:'TSC number (recommended)'}]},
+  {t:'Create a password',f:[{k:'pw',l:'Password (8+ characters, letters and a number)',type:'password',r:1,pw:1},{k:'pw2',l:'Confirm password',type:'password',r:1},{k:'terms',l:'I accept the Terms of Use and Privacy Policy',c:1,r:1}]},
+  {t:'Confirm your phone',otp:1}],
+ parent:[
+  {t:'Your details',f:[{k:'full',l:'Full name',r:1,m:/^[A-Za-z.' -]{3,60}$/,e:'Enter your full name.'},{k:'phone',l:'Phone number',r:1,ph:1},{k:'rel',l:'Relationship to the learner',s:['Mother','Father','Guardian','Other'],r:1},{k:'pw',l:'Password (8+ characters, letters and a number)',type:'password',r:1,pw:1},{k:'terms',l:'I accept the Terms of Use and Privacy Policy',c:1,r:1}]},
+  {t:'Confirm your phone',otp:1},
+  {t:'Add your child',link:1}]};
+function Signup(){const U=S.su||(S.su={role:null,step:0,d:{u18:true},er:{}});
+ if(!U.role)return `<div class="fhead"><button class="ib lt" data-a="go" data-s="welcome" aria-label="Back">${icon('back')}</button><h1>Who are you?</h1></div><div class="form">
+ ${[['student','I am a Student','Grades 10 to 12. Learn, practise and track progress.','#0B8F80','user'],['teacher','I am a Teacher','Create classes, assess and record SBA.','#6247E5','pen'],['parent','I am a Parent or Guardian','Follow progress and message teachers.','#D9482B','home']].map(r=>`<button class="role" style="--c:${r[3]}" data-a="pickRole" data-r="${r[0]}"><span class="rb">${icon(r[4])}</span><span><b style="font-family:var(--disp);font-size:1.05em">${r[1]}</b><br><span class="sm mute">${r[2]}</span></span></button>`).join('')}
+ <button class="btn ghost" style="margin-top:18px" data-a="go" data-s="login">I already have an account</button></div>`;
+ const steps=FIELDS[U.role],st=steps[U.step],d=U.d;
+ let body='';
+ if(st.otp)body=`<p class="mute" style="line-height:1.5;margin-top:6px">We sent a 6-digit code by SMS to ${esc(d.phone?normPhone(d.phone):'your phone')}. It is valid for 10 minutes.</p><div class="fld"><label for="otp">Enter code</label><input id="otp" class="otp" inputmode="numeric" maxlength="6" autocomplete="one-time-code" data-f="otp"></div>${U.er.otp?`<div class="fld"><div class="er">${U.er.otp}</div></div>`:''}<p class="sm mute" style="margin-top:12px">Demo: any 6 digits work. In the live app the code arrives by SMS (max 5 tries, resend after 60 seconds).</p><button class="btn ghost" style="margin-top:12px" data-a="resend">Resend code</button>`;
+ else if(st.link)body=`<p class="mute" style="line-height:1.5;margin-top:6px">Enter the code from your child's app, or their school and admission number. You see no results until the link is approved.</p><div class="fld"><label for="lc">Student link code</label><input id="lc" data-f="lcode" maxlength="6" placeholder="6 characters" value="${esc(d.lcode||'')}"></div><div class="fld"><label for="adm">Or admission number</label><input id="adm" data-f="adm" placeholder="e.g. 2026/0345" value="${esc(d.adm||'')}"></div>${U.er.link?`<div class="fld"><div class="er">${U.er.link}</div></div>`:''}`;
+ else body=st.f.filter(f=>!f.showIf||f.showIf(d)).map(f=>Field(f,d,U.er)).join('');
+ const last=U.step===steps.length-1;
+ return `<div class="fhead"><button class="ib lt" data-a="suBack" aria-label="Back">${icon('back')}</button><h1>${st.t}</h1></div><div class="steps">${steps.map((_,i)=>`<i class="${i<=U.step?'on':''}"></i>`).join('')}</div><div class="form">${body}<button class="btn" style="margin-top:22px" data-a="suNext">${st.link?'Send link request':last||st.otp&&U.role==='student'?'Verify and finish':'Next'}</button><p class="sm mute" style="margin-top:14px;line-height:1.5">We collect only what we need. Your data is handled under the Kenya Data Protection Act, 2019.</p></div>`}
+function Field(f,d,er){const v=d[f.k];let inp;
+ if(f.c)return `<label class="chk"><input type="checkbox" data-f="${f.k}" ${(f.k==='u18'?v!==false:v)?'checked':''} ${f.k==='u18'?'data-ch="u18"':''}><span>${f.l}</span></label>${er[f.k]?`<div class="er" style="color:#E0483F;font-size:.82em;font-weight:600;margin-top:5px">${er[f.k]}</div>`:''}`;
+ let opts=f.s;if(f.dep==='path'){const p=PATHS.find(x=>x.n===d.path);opts=p?Object.keys(p.tracks):[]}
+ if(f.dep==='track'){const p=PATHS.find(x=>x.n===d.path);opts=p&&d.track&&p.tracks[d.track]?p.tracks[d.track]:[]}
+ if(opts)inp=`<select id="f_${f.k}" data-f="${f.k}" ${f.k==='path'||f.k==='track'?'data-ch="dep"':''}><option value="">Choose…</option>${opts.map(o=>`<option ${v===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+ else inp=`<input id="f_${f.k}" data-f="${f.k}" type="${f.type||(f.ph?'tel':'text')}" value="${f.type==='password'?'':esc(v||'')}" ${f.ph?'placeholder="07XX XXX XXX"':''}>`;
+ return `<div class="fld"><label for="f_${f.k}">${f.l}</label>${inp}${er[f.k]?`<div class="er">${er[f.k]}</div>`:''}${f.dep==='track'&&!d.path?'<div class="sm mute" style="margin-top:5px">Choose a pathway first.</div>':''}</div>`}
+function collect(){const U=S.su;if(!U)return;document.querySelectorAll('[data-f]').forEach(e=>{U.d[e.dataset.f]=e.type==='checkbox'?e.checked:e.value})}
+function validate(){const U=S.su,st=FIELDS[U.role][U.step],d=U.d,er={};
+ if(st.otp){if(!/^\d{6}$/.test(d.otp||''))er.otp='Enter the 6-digit code.';U.er=er;return !Object.keys(er).length}
+ if(st.link){if(!(d.lcode||'').trim()&&!(d.adm||'').trim())er.link='Enter a link code or an admission number.';U.er=er;return !Object.keys(er).length}
+ st.f.filter(f=>!f.showIf||f.showIf(d)).forEach(f=>{const v=d[f.k];
+  if(f.r&&!v){er[f.k]=f.c?'Please tick this box to continue.':'Required.';return}
+  if(!v)return;
+  if(f.m&&!f.m.test(v))er[f.k]=f.e;
+  if(f.ph&&!PHONE.test(v.replace(/[\s-]/g,'')))er[f.k]='Use a Kenyan number such as 0712 345 678 or +254712345678.';
+  if(f.pw&&!(v.length>=8&&/[A-Za-z]/.test(v)&&/\d/.test(v)))er[f.k]='Use at least 8 characters with a letter and a number.';
+  if(f.k==='pw2'&&v!==d.pw)er[f.k]='Passwords do not match.';
+  if(f.k==='pphone'&&d.phone&&normPhone(v)===normPhone(d.phone))er[f.k]='Use your parent or guardian phone, not your own.';});
+ U.er=er;return !Object.keys(er).length}
+function Consent(){return `<div class="fhead"><h1>Almost done</h1></div><div class="form"><div class="card" style="text-align:center;padding:26px 18px"><div style="color:var(--act)">${icon('lock',44)}</div><h2 style="margin-top:10px">Waiting for parent approval</h2><p class="mute" style="margin-top:8px;line-height:1.5">We sent an SMS to your parent or guardian. You get full access as soon as they say yes. Until then you can only preview free notes.</p><span class="chip" style="--c:#D08A00;margin-top:12px">pending_consent</span></div>
+<div class="col gap" style="margin-top:16px"><button class="btn ghost" data-a="resendConsent">Resend SMS to guardian</button><button class="btn" data-a="approveConsent">Demo: guardian approves</button></div><p class="sm mute" style="margin-top:12px;line-height:1.5">Approval is stored with a timestamp, the guardian's phone and the policy version. If there is no reply in 7 days the request expires.</p></div>`}
+
+/* ---------- App shell ---------- */
+function AppView(){const r=S.role;const hide=!!S.quiz;
+ return `<div id="view" class="view">${r==='student'?Student():r==='teacher'?Teacher():Parent()}</div>${hide?'':`<nav class="tabbar" aria-label="Main">${TABS[r].map(x=>`<button class="tab ${S.tab===x[0]&&!S.lesson&&!S.subj&&!S.adv?'on':''}" data-a="tab" data-k="${x[0]}">${icon(x[1],23)}<span>${t(x[0]==='home'&&r==='teacher'?'dash':x[0])}</span><i class="pip"></i></button>`).join('')}</nav>`}`}
+function Banners(){let h='';if(S.offline)h+=`<div class="banner off">${icon('off',18)}Offline. Downloaded lessons still work; quiz answers sync when you reconnect.</div>`;if(S.saver)h+=`<div class="banner" style="background:var(--soft);color:var(--text)">Data saver is on: video autoplay off, text-first lessons.</div>`;return h}
+function Hdr(h,sub,extra=''){return `<header class="hdr"><div class="row sb"><div><h1>${h}</h1><div class="sub">${sub}</div></div><button class="ib" data-a="modal" data-m="notif" aria-label="Notifications">${icon('bell')}<i class="dot"></i></button></div>${extra}</header><div class="band"></div>`}
+
+/* ---------- Student ---------- */
+function Student(){if(S.quiz)return Quiz();if(S.lesson)return Lesson();if(S.adv)return Advisor();if(S.subj)return SubjectDetail();
+ return {home:SHome,learn:SLearn,tasks:STasks,progress:SProgress,profile:Profile}[S.tab]()}
+function SHome(){const rec=Object.entries(S.sc).sort((a,b)=>a[1]-b[1])[0],RL=LES(rec[0]);
+ const open=S.tasks.filter(x=>x.st==='new'||x.st==='prog').slice(0,3);
+ return Hdr(`${t('hello')}, ${esc(S.user.first)}`,'Grade 10 East, Lakeview Senior School',`<div class="streak">${icon('flame',18)}6 ${t('streak')}<span class="days">${['M','T','W','T','F','S','S'].map((d,i)=>`<b class="${i<6?'on':''}">${d}</b>`).join('')}</span></div>`)+Banners()+
+ `<div class="sec"><div class="journey"><div class="row sb"><b style="font-family:var(--disp)">Your njia: STEM, Pure Sciences</b><span class="chip" style="--c:#0FB5A0;background:rgba(15,181,160,.25);color:#7FF0E0">Grade 10</span></div>
+ <svg viewBox="0 0 320 84" role="img" aria-label="Journey from Grade 10 to Grade 12"><path d="M26 50 Q92 6 160 28 T294 44" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="6" stroke-linecap="round" stroke-dasharray="1 12" pathLength="100"/><path d="M26 50 Q92 6 160 28 T294 44" fill="none" stroke="#0FB5A0" stroke-width="6" stroke-linecap="round" pathLength="1" stroke-dasharray=".17 1"/>
+ <circle cx="26" cy="50" r="11" fill="#FFB02E" stroke="#fff" stroke-width="3"/><circle cx="160" cy="28" r="9" fill="#12153A" stroke="rgba(255,255,255,.5)" stroke-width="3"/><circle cx="294" cy="44" r="9" fill="#12153A" stroke="rgba(255,255,255,.5)" stroke-width="3"/>
+ <g font-size="11" fill="#C9CCF0" font-family="inherit" text-anchor="middle"><text x="26" y="78" font-weight="700" fill="#fff">Grade 10</text><text x="160" y="62">Grade 11</text><text x="294" y="78">Grade 12</text></g></svg></div></div>
+ <div class="sec"><h2>${t('subjects')}</h2><div class="grid2">${SUBJECTS.map(s=>`<button class="subj" style="--c:${s.c}" data-a="openSubj" data-id="${s.id}"><div class="row sb">${ring(subjPct(s),'#fff',54,6,'#fff')}${LChip(subjAvg(s)).replace('class="chip"','class="chip"')}</div><span class="nm">${S.lang==='sw'?s.sw:s.name}</span></button>`).join('')}</div></div>
+ <div class="sec"><h2>${t('todo')}</h2><div class="list">${open.map(x=>`<button class="li" data-a="startQuiz" data-id="${x.lid}" data-task="${x.id}"><i class="dotc" style="--c:${LES(x.lid).subj.c}"></i><span class="grow"><b>${x.t}</b><br><span class="sm mute">${LES(x.lid).subj.name}, due ${x.due}${x.sba?', counts for SBA':''}</span></span><span class="chip" style="--c:#2B2F8F">${x.st==='prog'?'Continue':t('start')}</span></button>`).join('')||'<div class="li mute">All caught up. New work from your teachers appears here.</div>'}</div></div>
+ <div class="sec"><h2>${t('recommended')}</h2><button class="li card" style="border:1px solid var(--line)" data-a="startQuiz" data-id="${rec[0]}"><i class="dotc" style="--c:${RL.subj.c}"></i><span class="grow"><b>${RL.title}</b><br><span class="sm mute">${RL.subj.name}: you scored ${rec[1]}% here. A 3-question practice takes 2 minutes.</span></span>${icon('chev',18)}</button></div>
+ <div class="sec"><button class="advice" data-a="advisor"><span style="color:var(--sun)">${icon('compass',34)}</span><span><b style="font-family:var(--disp);font-size:1.05em">Not sure about your pathway?</b><br><span class="sm" style="color:#C9CCF0">Answer 6 quick questions and compare pathways and careers.</span></span></button></div>`}
+function SLearn(){return Hdr(t('learn'),'Notes, examples and practice for your combination')+Banners()+`<div class="sec">${SUBJECTS.map(s=>`<button class="li card" style="margin-bottom:10px;border:1px solid var(--line)" data-a="openSubj" data-id="${s.id}"><span class="chip" style="--c:${s.c};padding:10px;border-radius:12px">${icon(s.ic,22)}</span><span class="grow"><b>${S.lang==='sw'?s.sw:s.name}</b><br><span class="sm mute">${s.lessons.length} lessons, ${subjPct(s)}% complete</span></span>${icon('chev',18)}</button>`).join('')}</div>`}
+function SubjectDetail(){const s=SB(S.subj);return `<div class="sh" style="--c:${s.c}"><button class="ib" data-a="closeSubj" aria-label="Back">${icon('back')}</button><span class="t">${s.name}</span>${ring(subjPct(s),'#fff',40,5,'#fff')}</div><div class="band"></div>${Banners()}<div class="sec"><div class="list">${s.lessons.map(l=>`<button class="li" data-a="openLesson" data-id="${l.id}"><span class="chip" style="--c:${S.done[l.id]?'#3A9A47':'#62648A'}">${S.done[l.id]?icon('check',14):''}${S.done[l.id]?'Done':'New'}</span><span class="grow"><b>${l.title}</b><br><span class="sm mute">${l.strand}, ${l.mins} min${S.dl[l.id]?', downloaded':''}</span></span>${icon('chev',18)}</button>`).join('')}</div></div>`}
+function Lesson(){const L=LES(S.lesson),s=L.subj,n=S.ex[L.id]||0;
+ return `<div class="sh" style="--c:${s.c}"><button class="ib" data-a="closeLesson" aria-label="Back">${icon('back')}</button><span class="t">${s.name}</span><button class="ib" data-a="bookmark" aria-label="Bookmark" style="${S.book[L.id]?'background:#FFB02E;color:#12153A':''}">${icon('bookmark',20)}</button></div><div class="band"></div>
+ <article class="art" style="--c:${s.c}"><span class="chip" style="--c:${s.c}">${L.strand}</span><h1 style="margin-top:10px">${L.title}</h1><div class="sm mute" style="margin-top:4px">${L.mins} minute read</div>
+ <div class="outc"><b>By the end you can</b><ul>${L.outcomes.map(o=>`<li>${o}</li>`).join('')}</ul></div>${L.body.map(p=>`<p>${p}</p>`).join('')}
+ ${L.ex?`<div class="ex"><b style="font-family:var(--disp)">Worked example</b><div class="step">${L.ex[0]}</div>${L.ex.slice(1,1+n).map((x,i)=>`<div class="step"><b>Step ${i+1}.</b> ${x}</div>`).join('')}${n<L.ex.length-1?`<button class="btn ghost sm2" style="margin-top:8px" data-a="showStep">Show next step</button>`:''}</div>`:''}
+ <div class="row gap" style="margin-top:18px"><button class="btn ghost" data-a="dl">${icon('dl',18)}${S.dl[L.id]?'Downloaded':'Download 0.4 MB'}</button><button class="btn ghost" data-a="modal" data-m="ask">${t('ask')}</button></div>
+ <button class="btn" style="margin-top:12px" data-a="startQuiz" data-id="${L.id}">${t('check')}</button></article>`}
+function Quiz(){const q=S.quiz,L=LES(q.lid),s=L.subj;
+ if(q.fin){const l=lvl(q.pct);return `<div class="sh" style="--c:${s.c}"><button class="ib" data-a="closeQuiz" aria-label="Close">${icon('close')}</button><span class="t">Result: ${L.title}</span></div><div class="band"></div><div class="art" style="text-align:center"><div class="big" style="color:${l.c}">${q.pct}%</div><div style="margin-top:8px"><span class="chip" style="--c:${l.c};font-size:1em">${l.code}</span></div><h2 style="margin-top:10px">${l.w}</h2><p class="mute" style="margin:8px auto 0">${q.right} of ${L.quiz.length} correct. Your strand score is now ${S.sc[q.lid]}%.</p></div>
+ <div class="sec" style="padding-top:0">${L.quiz.map((x,i)=>`<div class="card" style="margin-top:10px"><div class="row gap6"><span class="chip" style="--c:${q.ans[i]===x.a?'#3A9A47':'#E0483F'}">${q.ans[i]===x.a?'Correct':'Revise'}</span></div><p class="b" style="margin-top:8px">${x.q}</p><p class="sm mute" style="margin-top:6px;line-height:1.5">Answer: ${x.o[x.a]}. ${x.why}</p></div>`).join('')}
+ <div class="col gap" style="margin-top:16px"><button class="btn" data-a="retry">Practise again</button><button class="btn ghost" data-a="closeQuiz">Back to lesson</button></div></div>`}
+ const x=L.quiz[q.i],a=q.sel!=null;
+ return `<div class="sh" style="--c:${s.c}"><button class="ib" data-a="closeQuiz" aria-label="Close quiz">${icon('close')}</button><span class="t">${L.title}</span><span class="chip" style="--c:#fff;background:rgba(255,255,255,.2);color:#fff">Autosaved</span></div><div class="band"></div>
+ <div class="art"><div class="row sb sm mute"><span>Question ${q.i+1} of ${L.quiz.length}</span><span>${q.task?'Teacher task':'Practice'}</span></div><div class="bar" style="--c:${s.c};margin-top:8px"><i style="width:${(q.i+(a?1:0))/L.quiz.length*100}%"></i></div>
+ <h2 style="margin-top:20px;font-size:1.25em;line-height:1.3">${x.q}</h2>${x.o.map((o,i)=>`<button class="opt ${a?(i===x.a?'ok':i===q.sel?'no':'dim'):''}" data-a="pick" data-i="${i}" ${a?'disabled':''}><span class="k">${'ABCD'[i]}</span>${o}</button>`).join('')}
+ ${a?`<div class="why"><b>${q.sel===x.a?'Correct.':'Not quite.'}</b> ${x.why}</div><button class="btn" style="margin-top:14px" data-a="nextQ">${q.i===L.quiz.length-1?'See result':t('next')}</button>`:''}</div>`}
+function STasks(){const lab={new:['Not started','#62648A'],prog:['In progress','#D08A00'],sub:['Submitted','#2569D6'],marked:['Marked','#3A9A47']};
+ return Hdr(t('tasks'),'Work from your teachers')+Banners()+`<div class="sec"><div class="list">${S.tasks.map(x=>`<button class="li" data-a="${x.st==='new'||x.st==='prog'?'startQuiz':'noop'}" data-id="${x.lid}" data-task="${x.id}"><i class="dotc" style="--c:${LES(x.lid).subj.c}"></i><span class="grow"><b>${x.t}</b><br><span class="sm mute">${LES(x.lid).subj.name}, due ${x.due}</span></span><span class="col" style="align-items:flex-end;gap:4px"><span class="chip" style="--c:${lab[x.st][1]}">${lab[x.st][0]}</span>${x.st==='marked'?`<span class="sm b">${x.score}% ${lvl(x.score).code}</span>`:''}</span></button>`).join('')}</div></div>`}
+function SProgress(){const o=overall(),l=lvl(o),wk=[20,35,0,45,30,50,15];
+ return Hdr(t('progress'),'Your competency levels by strand')+Banners()+`<div class="sec"><div class="card row gap" style="gap:16px">${ring(o,'#0FB5A0',74,8,'var(--text)','var(--soft)')}<div><div class="sm mute">Overall level</div><div class="row gap6" style="margin-top:2px"><span class="chip" style="--c:${l.c};font-size:.95em">${l.code}</span><b>${l.w}</b></div><div class="sm mute" style="margin-top:4px">${l.pts} of 8 points. Scale is set by the admin and can change.</div></div></div></div>
+ ${SUBJECTS.map(s=>`<div class="sec"><div class="row sb"><h2 style="font-size:1.02em">${s.name}</h2>${LChip(subjAvg(s))}</div>${s.lessons.map(l=>`<div style="margin-top:10px"><div class="row sb sm"><span>${l.strand}</span><span class="b">${S.sc[l.id]!=null?S.sc[l.id]+'%':'No quiz yet'}</span></div><div class="bar" style="--c:${s.c};margin-top:5px"><i style="width:${S.sc[l.id]||0}%"></i></div></div>`).join('')}</div>`).join('')}
+ <div class="sec"><h2>Study time this week</h2><div class="card"><div class="row" style="align-items:flex-end;gap:8px;height:100px">${wk.map((m,i)=>`<div class="col" style="flex:1;align-items:center;gap:4px;justify-content:flex-end;height:100%"><div style="width:100%;height:${Math.max(m*1.6,4)}px;border-radius:7px 7px 3px 3px;background:${m?'var(--sun)':'var(--line)'}"></div><span class="sm mute">${'MTWTFSS'[i]}</span></div>`).join('')}</div><div class="sm mute" style="margin-top:8px">${wk.reduce((a,b)=>a+b,0)} minutes in total</div></div></div>
+ <div class="sec"><h2>Badges</h2><div class="grid2">${[['First quiz',S.hist.length>0,'Finish one quiz'],['7-day streak',false,'1 more day to go'],['Subject mastery',false,'Score EE in every strand'],['Early bird',true,'Studied before 7 am']].map(b=>`<div class="card" style="${b[1]?'':'opacity:.55'}"><b>${b[0]}</b><div class="sm mute" style="margin-top:3px">${b[1]?'Earned':b[2]}</div></div>`).join('')}</div><button class="btn ghost" style="margin-top:14px" data-a="report">Download progress report (PDF)</button></div>`}
+function Advisor(){const A=S.adv;
+ if(A.done){const sc=A.sc,best=PATHS[sc.indexOf(Math.max(...sc))];
+  return `<div class="sh" style="--c:${best.c}"><button class="ib" data-a="closeAdv" aria-label="Back">${icon('back')}</button><span class="t">Your pathway match</span></div><div class="band"></div><div class="art"><h1>${best.n}</h1><p class="mute">Based on your answers, this pathway fits your interests best. Pathways are guidance, not a verdict.</p>
+  ${PATHS.map((p,i)=>`<div style="margin-top:14px"><div class="row sb sm"><b>${p.n}</b><span>${Math.round(sc[i]/6*100)}% match</span></div><div class="bar" style="--c:${p.c};margin-top:5px"><i style="width:${sc[i]/6*100}%"></i></div></div>`).join('')}
+  <div class="card" style="margin-top:18px"><b>Tracks</b><p class="sm" style="margin-top:6px">${Object.keys(best.tracks).join(', ')}</p><b style="display:block;margin-top:12px">Example subjects</b><p class="sm" style="margin-top:6px">${best.ex}</p><b style="display:block;margin-top:12px">Careers to explore</b><div class="row gap6" style="flex-wrap:wrap;margin-top:8px">${best.car.map(c=>`<span class="chip" style="--c:${best.c}">${c}</span>`).join('')}</div></div>
+  <p class="sm mute" style="margin-top:14px;line-height:1.5">Guidance only. Official subject lists and entry requirements are set by the Ministry of Education and institutions, and may change.</p><button class="btn" style="margin-top:14px" data-a="advisor">Retake the quiz</button></div>`}
+ const q=ADV[A.i];
+ return `<div class="sh"><button class="ib" data-a="closeAdv" aria-label="Back">${icon('back')}</button><span class="t">Pathway advisor</span></div><div class="band"></div><div class="art"><div class="sm mute">Question ${A.i+1} of ${ADV.length}</div><div class="bar" style="--c:var(--sun);margin-top:8px"><i style="width:${A.i/ADV.length*100}%"></i></div><h2 style="margin-top:20px;font-size:1.3em;line-height:1.3">${q[0]}</h2>${q.slice(1).map((o,i)=>`<button class="opt" data-a="advPick" data-i="${i}"><span class="k" style="background:${PATHS[i].c};color:#fff">${i+1}</span>${o}</button>`).join('')}</div>`}
+function Profile(){const r=S.role;const nmv=r==='student'?S.user.name:r==='teacher'?(S.user.name||'Mr. Otieno'):(S.user.name||'Grace Otieno');
+ const row=(l,k,on)=>`<div class="li"><span class="grow">${l}</span><button class="sw ${on?'on':''}" role="switch" aria-checked="${!!on}" aria-label="${l}" data-a="${k}"></button></div>`;
+ return `<header class="hdr"><div class="row gap"><div style="width:56px;height:56px;border-radius:18px 18px 18px 6px;background:var(--sun);color:#12153A;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:1.3em">${esc(nmv.split(' ').map(w=>w[0]).slice(0,2).join(''))}</div><div><h1 style="font-size:1.3em">${esc(nmv)}</h1><div class="sub">${r[0].toUpperCase()+r.slice(1)}, <span style="color:#7FF0E0">${r==='teacher'&&S.tPending?'pending_approval':'active'}</span></div></div></div></header><div class="band"></div>${Banners()}
+ <div class="sec"><h2>Settings</h2><div class="list"><div class="li"><span class="grow">Language</span><div class="seg" style="width:170px"><button class="${S.lang==='en'?'on':''}" data-a="lang" data-l="en">English</button><button class="${S.lang==='sw'?'on':''}" data-a="lang" data-l="sw">Kiswahili</button></div></div>
+ <div class="li"><span class="grow">Text size</span><button class="btn ghost sm2" data-a="size" data-d="-1">A−</button><button class="btn ghost sm2" data-a="size" data-d="1">A+</button></div>${row('Data saver','saver',S.saver)}${row('Simulate offline','offline',S.offline)}${row('Study reminders (7:00 pm)','noop',true)}</div></div>
+ ${r==='student'?`<div class="sec"><h2>Offline downloads</h2><div class="list">${Object.keys(S.dl).map(id=>`<div class="li"><span class="grow"><b>${LES(id).title}</b><br><span class="sm mute">${LES(id).subj.name}, 0.4 MB</span></span><button class="btn ghost sm2" data-a="rmdl" data-id="${id}">Remove</button></div>`).join('')||'<div class="li mute">Nothing downloaded yet. Open a lesson to save it.</div>'}</div></div>
+ <div class="sec"><h2>Invite a parent or guardian</h2><div class="card">${S.invite?`<div class="big" style="font-size:2.3em;letter-spacing:.12em;text-align:center">${S.invite}</div><p class="sm mute" style="text-align:center;margin-top:6px">Valid for 24 hours. Your parent enters it in their app.</p>`:'<p class="sm mute" style="line-height:1.5">Create a code so a parent can follow your progress. They see nothing until you or the school approves the link.</p>'}<button class="btn ghost" style="margin-top:12px" data-a="invite">${S.invite?'Make a new code':'Create code'}</button></div></div>`:''}
+ ${r==='parent'?`<div class="sec"><h2>Consent and privacy</h2><div class="list"><div class="li"><span class="grow"><b>Consent for ${kids()[S.child].n.split(' ')[0]}</b><br><span class="sm mute">Approved 12 Oct 2026, policy v1.0</span></span><span class="chip" style="--c:#3A9A47">Active</span></div><button class="li" data-a="toast" data-m="Data download requested. We will SMS you when it is ready."><span class="grow">Request data download</span>${icon('chev',18)}</button><button class="li" data-a="toast" data-m="To withdraw consent, we will ask you to confirm by SMS code first."><span class="grow">Withdraw consent</span>${icon('chev',18)}</button></div></div>`:''}
+ <div class="sec"><div class="col gap"><button class="btn ghost" data-a="toast" data-m="Signed out of all other devices.">Log out of all devices</button><button class="btn dark" data-a="logout">Log out</button></div></div>`}
+
+/* ---------- Parent ---------- */
+function kids(){return [
+ {n:'Amina Otieno',g:10,sch:'Lakeview Senior School',path:'STEM, Pure Sciences',combo:'Biology, Chemistry, Computer Studies, Core Mathematics',att:94,act:'Today, 7:40 am',subs:SUBJECTS.map(s=>({n:s.name,p:subjAvg(s),fb:FB[s.id],c:s.c})),sba:[['Cell structure quiz','5%','16/20'],['Titration practical','5%','24/30'],['Binary task','5%','Pending']],al:['Biology quiz due today at 5:00 pm','New result: Chemistry, atomic structure 81% (EE2)','Core Mathematics needs attention: gradients 39%']},
+ {n:'Brian Otieno',g:11,sch:'Maseno School',path:'Social Sciences, Humanities and Business Studies',combo:'History and Citizenship, Geography, Business Studies, Essential Mathematics',att:88,act:'Yesterday, 6:15 pm',subs:[{n:'History and Citizenship',p:66,fb:'Writes thoughtful answers. Add more dates and evidence.',c:'#F5A524'},{n:'Geography',p:58,fb:'Good map skills. Revise climate patterns.',c:'#0B8F80'},{n:'Business Studies',p:49,fb:'Practise record keeping questions.',c:'#6247E5'},{n:'Essential Mathematics',p:44,fb:'Needs regular practice on percentages.',c:'#D9482B'}],sba:[['Case study essay','5%','14/20'],['Market survey project','5%','Pending']],al:['Business Studies project due Friday','Attendance dipped to 88% this month','New result: Geography 58% (ME1)']}]}
+function Parent(){return {home:PHome,results:PResults,msgs:PMsgs,pay:PPay,profile:Profile}[S.tab]()}
+function KidSel(){return `<div class="row gap6" style="margin-top:12px">${kids().map((k,i)=>`<button class="pill ${S.child===i?'on':''}" data-a="child" data-i="${i}">${k.n.split(' ')[0]}</button>`).join('')}<span class="sm" style="color:#BFC3EE;margin-left:4px">${S.plan==='free'?'Free plan':S.plan==='prem'?'Student Premium':'Family plan'}</span></div>`}
+function PHome(){const k=kids()[S.child],o=avg(k.subs.map(s=>s.p)),l=lvl(o);
+ return Hdr(`Karibu, ${esc((S.user.name&&S.role==='parent'?S.user.name:'Grace Otieno').split(' ')[0])}`,'Following '+k.n,KidSel())+Banners()+
+ `<div class="sec"><div class="card"><div class="row sb"><div><h2>${k.n}</h2><div class="sm mute" style="margin-top:3px">Grade ${k.g}, ${k.sch}</div></div><div style="text-align:right"><span class="chip" style="--c:${l.c};font-size:1em">${l.code}</span><div class="sm mute" style="margin-top:3px">${l.w}</div></div></div><p class="sm" style="margin-top:12px;line-height:1.5"><b>${k.path}.</b> ${k.combo}.</p><p class="sm mute" style="margin-top:6px">Last active: ${k.act}</p></div></div>
+ <div class="sec"><h2>Alerts</h2><div class="list">${k.al.map((a,i)=>`<div class="li"><span class="grow" style="${S.alerts[i+1]?'opacity:.5':''}">${a}</span><button class="btn ghost sm2" data-a="seen" data-i="${i+1}">${S.alerts[i+1]?'Seen':'Mark seen'}</button></div>`).join('')}</div></div>
+ <div class="sec"><div class="grid2">${[['View results','results','chart'],['Message teacher','msgs','msg'],['Pay or renew','pay','wallet'],['Download report','report','dl']].map(a=>`<button class="card col gap6" data-a="${a[1]==='report'?'report':'tab'}" data-k="${a[1]}"><span style="color:var(--act)">${icon(a[2],26)}</span><b>${a[0]}</b></button>`).join('')}</div></div>`}
+function PResults(){const k=kids()[S.child];
+ return Hdr(t('results'),k.n+', Grade '+k.g,KidSel())+Banners()+`<div class="sec"><div class="list">${k.subs.map(s=>`<div class="li" style="align-items:flex-start"><i class="dotc" style="--c:${s.c};margin-top:6px"></i><span class="grow"><div class="row sb"><b>${s.n}</b>${LChip(s.p)}</div><div class="bar" style="--c:${s.c};margin:7px 0"><i style="width:${s.p}%"></i></div><span class="sm mute">${s.p}%. ${s.fb}</span></span></div>`).join('')}</div></div>
+ <div class="sec"><h2>SBA summary</h2><div class="list">${k.sba.map(x=>`<div class="li"><span class="grow">${x[0]}</span><span class="sm mute">weight ${x[1]}</span><b>${x[2]}</b></div>`).join('')}</div></div>
+ <div class="sec"><h2>Attendance</h2><div class="card"><div class="row sb"><b>${k.att}% present this term</b><span class="chip" style="--c:${k.att>=90?'#3A9A47':'#D08A00'}">${k.att>=90?'Good':'Watch'}</span></div><div class="bar" style="--c:${k.att>=90?'#3A9A47':'#D08A00'};margin-top:10px"><i style="width:${k.att}%"></i></div></div><button class="btn ghost" style="margin-top:14px" data-a="report">Download report (PDF)</button></div>`}
+function inHours(){const h=new Date().getHours();return h>=8&&h<16}
+function PMsgs(){const k=kids()[S.child];
+ return Hdr(t('msgs'),'Teachers of '+k.n.split(' ')[0],KidSel())+Banners()+`<div class="sec" style="padding-bottom:0"><div class="sm mute">Ms. Wanjiku, Biology. Office hours 8:00 am to 4:00 pm.</div>${S.msgs.map(m=>`<div class="bubble ${m.me?'me':'th'}">${esc(m.x)}<div class="sm" style="opacity:.7;margin-top:4px">${m.tm}${m.ah?', after hours':''}</div></div>`).join('')}</div>
+ <div class="sec"><div class="row gap6"><input class="inp" id="pm" placeholder="Write a message" aria-label="Message"><button class="btn sm2" data-a="sendPM" aria-label="Send">${icon('send',18)}</button></div><p class="sm mute" style="margin-top:8px">Messages are logged. Phone numbers and addresses are blocked for safety.</p></div>`}
+const PLANS={prem:{n:'Student Premium',m:150,t:400,d:'Unlimited practice, full question bank, offline downloads, detailed reports'},fam:{n:'Family',m:300,t:800,d:'Premium for up to 3 children, plus SMS alerts to your phone'}};
+function PPay(){return Hdr(t('pay'),'Plans and M-Pesa receipts')+Banners()+`<div class="sec"><div class="card"><b>Current plan:</b> ${S.plan==='free'?'Free':PLANS[S.plan].n}<p class="sm mute" style="margin-top:4px">Free includes core notes, daily quizzes, the pathway advisor and basic progress.</p></div>
+ ${Object.entries(PLANS).map(([k,p])=>`<button class="plan ${S.plan===k?'sel':''}" data-a="choosePlan" data-p="${k}"><div class="row sb"><b style="font-family:var(--disp)">${p.n}</b><span class="pr">KES ${p.m}<span class="sm mute" style="font-weight:500">/month</span></span></div><p class="sm mute" style="margin-top:6px;line-height:1.5">${p.d}. Or KES ${p.t} per term.</p></button>`).join('')}
+ <p class="sm mute" style="margin-top:12px;line-height:1.5">Sample prices, to be set after market testing. Payments go to M-Pesa number <b>0793693548</b>. If a plan ends you drop to Free and keep all learner data, after a 3-day grace period.</p></div>
+ <div class="sec"><h2>Receipts</h2><div class="list">${S.plan==='free'?'<div class="li mute">No payments yet. Your receipts appear here.</div>':`<div class="li"><span class="grow"><b>${PLANS[S.plan].n}</b><br><span class="sm mute">${S.pay&&S.pay.rc?S.pay.rc:''}</span></span><span class="chip" style="--c:#3A9A47">Paid</span></div>`}</div></div>`}
+
+/* ---------- Teacher ---------- */
+function Teacher(){if(S.tPending&&['classes','assess','mark'].includes(S.tab))return Hdr(t(S.tab),'Locked until approved')+`<div class="sec"><div class="card" style="text-align:center;padding:26px 16px"><div style="color:var(--act)">${icon('lock',40)}</div><h2 style="margin-top:10px">We are verifying your account</h2><p class="mute" style="margin-top:8px;line-height:1.5">Your school admin or our team is checking your details. This usually takes less than 2 days. You can browse content meanwhile.</p><button class="btn" style="margin-top:16px" data-a="approveT">Demo: approve my account</button></div></div>`;
+ return {dash:TDash,classes:TClasses,assess:TAssess,mark:TMark,more:TMore,home:TDash,profile:Profile}[S.tab]()}
+function TDash(){return Hdr(`Habari, ${esc(S.user.name||'Mr. Otieno')}`,'Lakeview Senior School, Biology and Chemistry')+(S.tPending?`<div class="banner">${icon('lock',18)}We are verifying your account. Class tools unlock when you are approved.</div>`:'')+Banners()+
+ `<div class="sec"><div class="grid2">${[[S.queue.length,'to mark','mark'],[S.joinReq.length,'join requests',null],[S.linkReq.length,'parent links',null],['64%','class average',null]].map(x=>`<button class="card" data-a="${x[2]?'tab':'noop'}" data-k="${x[2]||''}"><div class="big" style="font-size:2.1em">${x[0]}</div><div class="sm mute" style="margin-top:4px">${x[1]}</div></button>`).join('')}</div></div>
+ <div class="sec"><h2>Quick actions</h2><div class="row gap6" style="flex-wrap:wrap">${[['Create assessment','assess'],['Record SBA','assess'],['Take register','classes'],['Mark work','mark']].map(a=>`<button class="btn ghost sm2" data-a="tab" data-k="${a[1]}">${a[0]}</button>`).join('')}</div></div>
+ ${S.joinReq.length?`<div class="sec"><h2>Join requests</h2><div class="list">${S.joinReq.map((j,i)=>`<div class="li"><span class="grow"><b>${j.n}</b><br><span class="sm mute">${j.c}</span></span><button class="btn sm2" data-a="jr" data-i="${i}" data-y="1">Approve</button><button class="btn ghost sm2" data-a="jr" data-i="${i}">Reject</button></div>`).join('')}</div></div>`:''}
+ ${S.linkReq.length?`<div class="sec"><h2>Parent link requests</h2><div class="list">${S.linkReq.map((j,i)=>`<div class="li"><span class="grow"><b>${j.p}</b><br><span class="sm mute">wants to follow ${j.s}</span></span><button class="btn sm2" data-a="lr" data-i="${i}" data-y="1">Approve</button><button class="btn ghost sm2" data-a="lr" data-i="${i}">Reject</button></div>`).join('')}</div></div>`:''}`}
+function TClasses(){if(S.reg!=null)return TReg();
+ return Hdr(t('classes'),'Subject, grade and stream')+Banners()+`<div class="sec">${S.cls.map((c,i)=>`<div class="card" style="margin-bottom:12px"><div class="row sb"><b style="font-family:var(--disp);font-size:1.05em">${c.n}</b><span class="chip" style="--c:#2B2F8F">${c.k} learners</span></div><div class="row sb" style="margin-top:12px"><div><div class="sm mute">Join code, expires ${c.exp}</div><div class="b" style="font-size:1.4em;letter-spacing:.14em;font-family:var(--disp)">${c.code}</div></div><button class="btn ghost sm2" data-a="newcode" data-i="${i}">Refresh code</button></div><button class="btn" style="margin-top:12px" data-a="reg" data-i="${i}">Take register</button></div>`).join('')}</div>`}
+const ROLL=['Amina Otieno','Brian Kamau','Cynthia Atieno','Dennis Mutua','Esther Njeri','Faith Wafula'];
+function TReg(){const R=S.regd;return `<div class="sh"><button class="ib" data-a="closeReg" aria-label="Back">${icon('back')}</button><span class="t">Register: ${S.cls[S.reg].n}</span></div><div class="band"></div><div class="sec"><div class="list">${ROLL.map((n,i)=>`<div class="li"><span class="grow"><b>${n}</b></span><div class="seg" style="width:190px">${['P','A','L'].map(s=>`<button class="${R[i]===s?'on':''}" data-a="mk" data-i="${i}" data-s="${s}" aria-label="${s==='P'?'Present':s==='A'?'Absent':'Late'}">${s==='P'?'Present':s==='A'?'Absent':'Late'}</button>`).join('')}</div></div>`).join('')}</div><button class="btn" style="margin-top:14px" data-a="saveReg">Save register</button></div>`}
+function TAssess(){const D=S.draft,bank=SUBJECTS[0].lessons.concat(SUBJECTS[1].lessons).flatMap(l=>l.quiz.map(q=>({id:l.id+q.q,q:q.q,tag:l.strand})));
+ const sb=S.sba;const w=r=>Math.round((r[1]/20*5+r[2]/30*5+r[3]/50*5)*10)/10;
+ return Hdr(t('assess'),'Build, publish and record SBA')+Banners()+`<div class="sec"><h2>New assessment</h2><div class="card"><div class="fld" style="margin-top:0"><label for="d_title">Title</label><input id="d_title" data-d="title" value="${esc(D.title)}" placeholder="e.g. Cells and osmosis check"></div>
+ <div class="fld"><label for="d_cls">Class</label><select id="d_cls" data-d="cls">${S.cls.map((c,i)=>`<option value="${i}" ${+D.cls===i?'selected':''}>${c.n}</option>`).join('')}</select></div>
+ <div class="grid2"><div class="fld"><label for="d_type">Type</label><select id="d_type" data-d="type">${['Quiz','SBA task','Practical'].map(o=>`<option ${D.type===o?'selected':''}>${o}</option>`).join('')}</select></div><div class="fld"><label for="d_w">SBA weight (%)</label><input id="d_w" type="number" min="0" max="15" data-d="w" value="${D.w}"></div></div>
+ <div class="grid2"><div class="fld"><label for="d_lim">Time limit (min)</label><input id="d_lim" type="number" min="5" data-d="lim" value="${D.lim}"></div><div class="fld"><label for="d_mk">Marking</label><select id="d_mk" data-d="mk">${['Automatic','Manual','Mixed'].map(o=>`<option ${D.mk===o?'selected':''}>${o}</option>`).join('')}</select></div></div>
+ <div class="fld"><label>Pick questions from the bank</label>${bank.slice(0,7).map(b=>`<label class="chk" style="margin-top:8px"><input type="checkbox" data-sel="${esc(b.id)}" ${D.sel[b.id]?'checked':''}><span>${b.q}<br><span class="sm mute">${b.tag}</span></span></label>`).join('')}</div>
+ <button class="btn" style="margin-top:16px" data-a="publish">Preview and publish</button></div></div>
+ ${S.published.length?`<div class="sec"><h2>Published</h2><div class="list">${S.published.map(p=>`<div class="li"><span class="grow"><b>${esc(p.t)}</b><br><span class="sm mute">${p.c}, ${p.n} questions, ${p.ty}${p.w?`, SBA ${p.w}%`:''}</span></span><span class="chip" style="--c:#3A9A47">Live</span></div>`).join('')}</div></div>`:''}
+ <div class="sec"><div class="row sb"><h2>SBA record sheet</h2><span class="chip" style="--c:${sb.locked?'#3A9A47':'#D08A00'}">${sb.locked?'Locked':'Open'}</span></div><div class="card" style="margin-top:10px;padding:8px;overflow-x:auto"><table><thead><tr><th>Learner</th><th>Quiz /20</th><th>Prac /30</th><th>Project /50</th><th>SBA /15</th></tr></thead><tbody>${sb.rows.map((r,i)=>`<tr><td>${r[0].split(' ')[0]}</td>${[1,2,3].map(j=>`<td><input type="number" value="${r[j]}" data-c="sba" data-i="${i}" data-j="${j}" aria-label="${r[0]} score" ${sb.locked?'disabled':''}></td>`).join('')}<td class="b">${w(r)}</td></tr>`).join('')}</tbody></table></div>
+ <p class="sm mute" style="margin-top:8px;line-height:1.5">Each task is worth 5% and the total is scaled to the SBA weighting for the grade. Weights are settings, not fixed in code.</p>
+ <div class="row gap" style="margin-top:12px"><button class="btn ${sb.locked?'ghost':''}" data-a="lock">${sb.locked?'Unlock with a reason':'Lock marks'}</button><button class="btn ghost" data-a="toast" data-m="SBA sheet exported (demo).">Export</button></div></div>`}
+function TMark(){const q=S.queue[0];
+ return Hdr(t('mark'),S.queue.length+' answers waiting')+Banners()+(q?`<div class="sec"><div class="card"><div class="sm mute">${q.who}</div><p class="b" style="margin-top:6px">${q.q}</p><div class="why" style="margin-top:10px">${q.a}</div><div class="fld"><label>Rubric level</label><div class="seg">${[['EE','Exceeds'],['ME','Meets'],['AE','Approaches'],['BE','Below']].map(l=>`<button class="${S.mark.lvl===l[0]?'on':''}" data-a="rub" data-l="${l[0]}" aria-label="${l[1]}">${l[0]}</button>`).join('')}</div></div>
+ <div class="fld"><label>Feedback</label><div class="row gap6" style="flex-wrap:wrap">${['Clear explanation','Add an example','Use key terms','Check your units'].map(f=>`<button class="chip" style="--c:#2B2F8F" data-a="fb" data-f="${f}">${f}</button>`).join('')}</div><textarea class="inp" id="mfb" rows="2" style="margin-top:8px" placeholder="Comment">${esc(S.mark.fb)}</textarea></div>
+ <button class="btn" style="margin-top:14px" data-a="saveMark">Save and next</button></div></div>`:`<div class="sec"><div class="card" style="text-align:center;padding:26px"><div style="color:#3A9A47">${icon('check',40)}</div><h2 style="margin-top:8px">Queue clear</h2><p class="mute" style="margin-top:6px">New submissions with open questions will appear here.</p></div></div>`)}
+function TMore(){const rows=[['Cell Biology',[72,64,58]],['Movement of Substances',[48,55,41]],['Nutrition',[66,70,62]],['Respiration',[35,52,44]]];
+ return Hdr(t('more'),'Analytics and account')+Banners()+`<div class="sec"><h2>Competency heat map</h2><div class="card" style="padding:8px"><table class="heat"><thead><tr><th>Strand</th><th>10E</th><th>10N</th><th>11W</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r[0]}</td>${r[1].map(v=>`<td class="h" style="background:${lvl(v).c}">${lvl(v).code}</td>`).join('')}</tr>`).join('')}</tbody></table></div><p class="sm mute" style="margin-top:8px">Respiration is the weakest strand in Grade 10 East. Consider a recap lesson.</p></div>
+ <div class="sec"><h2>At-risk learners</h2><div class="list">${[['Dennis Mutua','Average 29%, no log-in for 6 days'],['Faith Wafula','Missed 2 deadlines']].map(a=>`<div class="li"><span class="grow"><b>${a[0]}</b><br><span class="sm mute">${a[1]}</span></span><button class="btn ghost sm2" data-a="toast" data-m="Reminder sent to ${a[0].split(' ')[0]} and parent.">Remind</button></div>`).join('')}</div></div>
+ <div class="sec"><button class="btn ghost" data-a="tab" data-k="profile">Profile and settings</button></div>`}
+
+/* ---------- Modals ---------- */
+function Modal(){const m=S.modal;let c='';
+ if(m.t==='notif')c=`<h2>Notifications</h2><div class="list" style="margin-top:10px">${(S.role==='student'?['Biology quiz due today at 5:00 pm','New result: Chemistry atomic structure, 81% EE2','Ms. Wanjiku posted notes on osmosis']:S.role==='parent'?['Chemistry result released for Amina','Assessment due tomorrow: Biology','Security: signed in from a new device']:['3 new join requests','12 submissions received today (batched)','SMS credit balance is healthy']).map(x=>`<div class="li">${x}</div>`).join('')}</div><button class="btn ghost" style="margin-top:14px" data-a="closeModal">Close</button>`;
+ if(m.t==='ask'){const L=LES(S.lesson);c=`<h2>${t('ask')}</h2><p class="sm mute">To ${L.subj.teacher}, about: ${L.title}</p><textarea class="inp" id="askTxt" rows="4" style="margin-top:12px" placeholder="Type your question"></textarea><p class="sm mute" style="margin-top:8px">Phone numbers and addresses are blocked. Only your teacher sees this.</p><div class="row gap" style="margin-top:12px"><button class="btn ghost" data-a="closeModal">Cancel</button><button class="btn" data-a="sendAsk">Send</button></div>`}
+ if(m.t==='unlock')c=`<h2>Unlock marks</h2><p class="sm mute">Changes to locked marks need a reason and are saved in the audit log.</p><textarea class="inp" id="unlockR" rows="3" style="margin-top:12px" placeholder="Reason for the change"></textarea><div class="row gap" style="margin-top:12px"><button class="btn ghost" data-a="closeModal">Cancel</button><button class="btn" data-a="doUnlock">Unlock</button></div>`;
+ if(m.t==='pay'){const P=S.pay,p=PLANS[P.plan],amt=P.term==='t'?p.t:p.m;
+  if(P.step===0)c=`<h2>Pay with M-Pesa</h2><div class="mp">${icon('wallet',22)}<span>Pay to 0793693548<br><span class="sm" style="font-weight:500">Elimika Nasi, ${p.n}</span></span></div><div class="seg" style="margin-top:14px"><button class="${P.term==='m'?'on':''}" data-a="term" data-t="m">Monthly KES ${p.m}</button><button class="${P.term==='t'?'on':''}" data-a="term" data-t="t">Term KES ${p.t}</button></div><div class="fld"><label for="payph">Your M-Pesa phone number</label><input id="payph" type="tel" value="${esc(P.ph)}" placeholder="07XX XXX XXX"></div>${P.er?`<div class="er" style="color:#E0483F;font-weight:600;margin-top:8px">${P.er}</div>`:''}<button class="btn" style="margin-top:16px" data-a="stk">Send M-Pesa prompt for KES ${amt}</button><button class="btn ghost" style="margin-top:10px" data-a="closeModal">Cancel</button>`;
+  if(P.step===1)c=`<h2>Check your phone</h2><div class="spin" role="status" aria-label="Waiting"></div><p class="mute" style="text-align:center">Sending the M-Pesa prompt to ${esc(P.ph)}…</p>`;
+  if(P.step===2)c=`<h2>M-Pesa prompt</h2><p class="mute sm">Demo of the prompt your parent sees on their handset. The live app uses the Safaricom Daraja STK Push, and only the verified callback activates a plan.</p><div class="card" style="margin-top:12px;background:#0B6B2E;color:#fff;border:0"><b>Pay KES ${amt} to Elimika Nasi (0793693548)?</b><div class="fld"><label for="pin" style="color:#fff">Enter M-Pesa PIN</label><input id="pin" type="password" inputmode="numeric" maxlength="4" class="otp" style="color:#12153A" autocomplete="off"></div></div>${P.er?`<div class="er" style="color:#E0483F;font-weight:600;margin-top:8px">${P.er}</div>`:''}<button class="btn" style="margin-top:14px" data-a="confirmPay">Confirm</button><button class="btn ghost" style="margin-top:10px" data-a="payFail">Cancel payment</button>`;
+  if(P.step===3)c=`<div style="text-align:center;padding:10px 0"><div style="color:#3A9A47">${icon('check',54)}</div><h2 style="margin-top:6px">Payment received</h2><p class="mute" style="margin-top:6px">${p.n} is active. A receipt SMS is on its way.</p><div class="card" style="margin-top:14px;text-align:left"><div class="row sb"><span class="mute">Receipt</span><b>${P.rc}</b></div><div class="row sb" style="margin-top:6px"><span class="mute">Amount</span><b>KES ${amt}</b></div><div class="row sb" style="margin-top:6px"><span class="mute">Paid to</span><b>0793693548</b></div></div></div><button class="btn" style="margin-top:14px" data-a="closeModal">Done</button>`;
+  if(P.step===4)c=`<div style="text-align:center;padding:10px 0"><h2>Payment did not go through</h2><p class="mute" style="margin-top:8px;line-height:1.5">No money was taken. Check your M-Pesa balance and try again.</p></div><button class="btn" data-a="retryPay">Try again</button><button class="btn ghost" style="margin-top:10px" data-a="closeModal">Close</button>`}
+ return `<div class="modal" data-a="scrim"><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${c}</div></div>`}
+
+/* ============ ACTIONS ============ */
+const A={
+ noop(){},go(d){if(d.s==='signup')S.su=null;S.login.err='';go(d.s)},
+ lang(d){S.lang=d.l?d.l:(S.lang==='en'?'sw':'en');render()},saver(){S.saver=!S.saver;render()},offline(){S.offline=!S.offline;render()},
+ size(d){S.size=Math.min(1.3,Math.max(.9,S.size+(+d.d)*.1));render()},toast(d){toast(d.m)},
+ demo(d){S.role=d.r;S.tab=d.r==='teacher'?'dash':'home';S.tPending=false;S.user=d.r==='student'?{first:'Amina',name:'Amina Otieno'}:d.r==='teacher'?{first:'Otieno',name:'Mr. Otieno'}:{first:'Grace',name:'Grace Otieno'};S.subj=S.lesson=S.quiz=S.adv=null;go('app')},
+ logout(){S.role=null;go('welcome')},
+ tab(d){tabTo(d.k)},modal(d){S.modal={t:d.m};render()},closeModal(){S.modal=null;render()},scrim(d,e){if(e.target.classList.contains('modal')){S.modal=null;render()}},
+ showpw(){const i=$('#lpw');if(i)i.type=i.type==='password'?'text':'password'},
+ loginMode(){S.login.mode=S.login.mode==='pw'?'otp':'pw';S.login.err='';render()},
+ forgot(){toast('If an account exists, we have sent a code or link.')},
+ doLogin(){const L=S.login,id=($('#lid').value||'').trim().toLowerCase(),pw=$('#lpw')?$('#lpw').value:'x';
+  if(L.fails>=5){L.err='Too many attempts. Try again in 15 minutes.';return render()}
+  if(!id||!pw){L.fails++;L.err='Details do not match. Check and try again.';return render()}
+  if(L.mode==='otp'){toast('Code sent. Demo: signed in.')}
+  L.fails=0;L.err='';const r=id.startsWith('teacher')?'teacher':id.startsWith('parent')?'parent':'student';A.demo({r})},
+ pickRole(d){S.su.role=d.r;S.su.step=0;S.su.d={u18:true};S.su.er={};render(true)},
+ suBack(){const U=S.su;collect();if(!U.role||U.step===0){U.role?(U.role=null):0;if(!U.role&&!arguments[0]);return U.role===null&&U.step===0&&!U._x?(U._x=0,render(true)):0}U.step--;render(true)},
+ resend(){toast('New code sent. You can resend in 60 seconds.')},
+ suNext(){const U=S.su;collect();if(!validate())return render();const steps=FIELDS[U.role];
+  if(U.step<steps.length-1){U.step++;U.er={};return render(true)}
+  const d=U.d;
+  if(U.role==='student'){S.user={first:d.first,name:d.first+' '+d.last};S.role='student';S.tab='home';if(d.u18!==false){go('consent')}else go('app')}
+  if(U.role==='teacher'){S.user={first:d.full,name:d.full};S.role='teacher';S.tab='dash';S.tPending=true;go('app')}
+  if(U.role==='parent'){S.user={first:d.full,name:d.full};S.role='parent';S.tab='home';toast('Link request sent for approval. Demo child shown.');go('app')}},
+ resendConsent(){toast('SMS sent to your guardian.')},approveConsent(){S.role='student';S.tab='home';go('app')},
+ approveT(){S.tPending=false;toast('Approved. A verified badge now shows on your profile.');render()},
+ openSubj(d){S.tab='learn';S.subj=d.id;render(true)},closeSubj(){S.subj=null;render(true)},
+ openLesson(d){const l=LES(d.id);if(S.offline&&!S.dl[d.id]){toast('Not downloaded. Connect to open this lesson.');return}S.lesson=d.id;render(true)},
+ closeLesson(){S.lesson=null;render(true)},showStep(){const id=S.lesson;S.ex[id]=(S.ex[id]||0)+1;render()},
+ bookmark(){S.book[S.lesson]=!S.book[S.lesson];toast(S.book[S.lesson]?'Bookmarked':'Bookmark removed');render()},
+ dl(){S.dl[S.lesson]=1;toast('Saved for offline reading (0.4 MB)');render()},rmdl(d){delete S.dl[d.id];render()},
+ startQuiz(d){if(S.offline&&!S.dl[d.id]){toast('Not downloaded. Connect to start this quiz.');return}S.lesson=null;S.quiz={lid:d.id,i:0,sel:null,ans:[],task:d.task?+d.task:0};const tk=S.tasks.find(x=>x.id===+d.task);if(tk&&tk.st==='new')tk.st='prog';render(true)},
+ pick(d){const q=S.quiz;if(q.sel!=null)return;q.sel=+d.i;q.ans[q.i]=+d.i;render()},
+ nextQ(){const q=S.quiz,L=LES(q.lid);if(q.i<L.quiz.length-1){q.i++;q.sel=null;return render(true)}
+  const right=q.ans.filter((a,i)=>a===L.quiz[i].a).length,pct=Math.round(right/L.quiz.length*100);q.pct=pct;q.right=right;q.fin=true;
+  S.sc[q.lid]=S.sc[q.lid]!=null?Math.round((S.sc[q.lid]+pct)/2):pct;S.done[q.lid]=1;S.hist.push({lid:q.lid,pct});
+  const tk=S.tasks.find(x=>x.lid===q.lid&&x.st!=='marked'&&x.st!=='sub');if(tk&&q.task){tk.st='marked';tk.score=pct}render(true)},
+ retry(){const lid=S.quiz.lid;S.quiz={lid,i:0,sel:null,ans:[],task:0};render(true)},
+ closeQuiz(){const lid=S.quiz.lid,fin=S.quiz.fin;S.quiz=null;if(fin&&S.tab==='home'){} else S.lesson=lid;render(true)},
+ advisor(){S.adv={i:0,sc:[0,0,0],done:false};S.tab='home';S.subj=S.lesson=null;render(true)},
+ advPick(d){const a=S.adv;a.sc[+d.i]++;if(a.i<ADV.length-1)a.i++;else a.done=true;render(true)},closeAdv(){S.adv=null;render(true)},
+ report(){toast('Progress report ready: elimika-report.pdf (demo)')},
+ invite(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];S.invite=s;render()},
+ child(d){S.child=+d.i;S.alerts={1:0,2:0,3:0};render()},seen(d){S.alerts[d.i]=1;render()},
+ sendPM(){const v=$('#pm').value.trim();if(!v)return;if(/\d{9,}/.test(v.replace(/[\s-]/g,''))){toast('For safety, phone numbers cannot be shared in messages.');return}
+  S.msgs.push({me:1,x:v,tm:'Just now',ah:!inHours()});render()},
+ sendAsk(){const v=$('#askTxt').value.trim();if(!v)return;if(/\d{9,}/.test(v.replace(/[\s-]/g,''))){toast('For safety, phone numbers cannot be shared in messages.');return}S.modal=null;toast('Question sent to your teacher.');render()},
+ choosePlan(d){S.pay={plan:d.p,term:'m',step:0,ph:'0712 345 678',er:'',rc:''};S.modal={t:'pay'};render()},
+ term(d){S.pay.term=d.t;S.pay.ph=$('#payph').value;render()},
+ stk(){const P=S.pay,v=$('#payph').value.trim();if(!PHONE.test(v.replace(/[\s-]/g,''))){P.er='Enter a valid Safaricom number, for example 0712 345 678.';P.ph=v;return render()}
+  P.ph=v;P.er='';P.step=1;render();setTimeout(()=>{if(S.pay===P&&P.step===1){P.step=2;render()}},1800)},
+ confirmPay(){const P=S.pay,v=$('#pin').value;if(!/^\d{4}$/.test(v)){P.er='Enter your 4-digit PIN.';return render()}P.er='';P.step=3;P.rc='DEMO'+Math.random().toString(36).slice(2,8).toUpperCase();S.plan=P.plan;render()},
+ payFail(){S.pay.step=4;render()},retryPay(){S.pay.step=0;S.pay.er='';render()},
+ jr(d){const j=S.joinReq.splice(+d.i,1)[0];toast(d.y?j.n+' added to the class.':'Request rejected.');render()},
+ lr(d){const j=S.linkReq.splice(+d.i,1)[0];toast(d.y?'Link approved for '+j.s+'.':'Link rejected.');render()},
+ newcode(d){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];S.cls[+d.i].code=s;S.cls[+d.i].exp='12 Nov';toast('New join code. The old one stops working.');render()},
+ reg(d){S.reg=+d.i;S.regd=ROLL.map(()=> 'P');render(true)},closeReg(){S.reg=null;render(true)},mk(d){S.regd[+d.i]=d.s;render()},saveReg(){toast('Register saved. Parents of absent learners will get an SMS.');S.reg=null;render(true)},
+ publish(){const D=S.draft;const n=Object.values(D.sel).filter(Boolean).length;if(!D.title.trim()){toast('Add a title first.');return}if(!n){toast('Pick at least one question.');return}
+  S.published.unshift({t:D.title,c:S.cls[+D.cls].n,n,ty:D.type,w:D.type==='Quiz'&&+D.w===0?0:D.w});S.draft={title:'',cls:D.cls,type:'Quiz',w:5,lim:20,mk:'Automatic',sel:{}};toast('Published. Students and parents are notified.');render()},
+ lock(){if(S.sba.locked){S.modal={t:'unlock'};render()}else{S.sba.locked=true;toast('Marks locked. Changes now need a reason.');render()}},
+ doUnlock(){if(!$('#unlockR').value.trim()){toast('A reason is required.');return}S.sba.locked=false;S.modal=null;toast('Unlocked and recorded in the audit log.');render()},
+ rub(d){S.mark.fb=$('#mfb')?$('#mfb').value:S.mark.fb;S.mark.lvl=d.l;render()},
+ fb(d){const el=$('#mfb');S.mark.fb=((el?el.value:S.mark.fb)+' '+d.f+'.').trim();render()},
+ saveMark(){if(!S.mark.lvl){toast('Choose a rubric level first.');return}S.queue.shift();S.mark={lvl:null,fb:''};toast('Marked. Result released to the learner.');render()}
+};
+A.suBack=function(){const U=S.su;collect();if(U.role&&U.step>0){U.step--;U.er={};return render(true)}if(U.role){U.role=null;return render(true)}go('welcome')};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;if(el.disabled)return;const f=A[el.dataset.a];if(f){if(el.classList.contains('modal')&&e.target!==el)return;f(el.dataset,e)}});
+document.addEventListener('change',e=>{const el=e.target;
+ if(el.dataset.ch==='dep'||el.dataset.ch==='u18'){collect();if(el.dataset.f==='path'){S.su.d.track='';S.su.d.combo=''}if(el.dataset.f==='track')S.su.d.combo='';render()}
+ if(el.dataset.d){S.draft[el.dataset.d]=el.value}
+ if(el.dataset.sel!==undefined){S.draft.sel[el.dataset.sel]=el.checked}
+ if(el.dataset.c==='sba'){const v=Math.max(0,+el.value||0);S.sba.rows[+el.dataset.i][+el.dataset.j]=v;render()}});
+document.addEventListener('input',e=>{const el=e.target;if(el.dataset.d==='title')S.draft.title=el.value});
+render();
+</script>
+</body>
+</html>
